@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+ 
+  	<!-- 系统管理部分 -->
+    <package name="system" namespace="/system" extends="custom-default">
+		<action name="*/*" method="{2}" class="com.steven.core.action.{1}Action">
+		    <result name="list" >/system/{1}/list.jsp</result>
+		    <result name="create" >/system/{1}/create.jsp</result>
+		    <result name="edit" >/system/{1}/edit.jsp</result>
+		    <result name="show" >/system/{1}/show.jsp</result>
+		    <result name="list_action" type="redirect">/system/{1}/list.do</result>
+		    <!-- json result -->
+		    <result name="jsonPageList" type="json">
+		      <param name="ignoreHierarchy">false</param>
+		      <param name="root">jsonResult</param>
+		    </result>
+		    <result name="jsonList" type="json">
+		      <param name="ignoreHierarchy">false</param>
+		      <param name="root">jsonResult.result</param>
+		    </result>
+		    <result name="treeList" type="json">
+		      <param name="ignoreHierarchy">false</param>
+		      <param name="root">jsonResult.result</param>
+		    </result>
+		    <result name="jsonResult" type="json">
+		      <param name="ignoreHierarchy">false</param>
+		      <param name="root">jsonResult</param>
+		    </result>
+		    <result name="report" type="jasper">
+		       <!-- 使用baseDir和template组合定位模板位置,也可以指定baseDir -->
+		       <param name="location">${report.baseDir}/${report.template}</param>
+		       <!-- 也可以直接使用location定位模板位置
+		       <param name="location">${report.location}</param>
+		        -->
+		       <param name="contentType">application/octet-stream;charset=utf-8</param>
+               <param name="contentDisposition">${report.contentDisposition}</param>
+               <param name="documentName">${report.reportName}</param>
+               <param name="dataSource">report.result</param>
+               <param name="reportParameters">report.params</param>
+               <param name="format">${report.format}</param>
+		    </result>
+		</action>
+    </package>
+    
+    <!-- cms内容展示 -->
+    <package name="cms.content" namespace="/cms/content" extends="custom-default">
+		<action name="*" method="display" class="com.steven.cms.action.CmsContentAction">
+		    <result>/cms/content.jsp</result>
+		    <result name="t1">/cms/content.jsp</result>
+		    <result name="t2">/cms/content2.jsp</result>
+		</action>			
+     </package>
+    <package name="cms.channel" namespace="/cms/channel" extends="custom-default">
+		<action name="*" method="display" class="com.steven.cms.action.ChannelAction">
+		     <result >/cms/channel.jsp</result>
+		</action>			
+     </package>
+    <package name="cms.board" namespace="/cms/board" extends="custom-default">
+		<action name="show" method="frontShow" class="com.steven.cms.action.CmsBoardAction">
+		     <result name="list">/cms/board.jsp</result>
+		</action>			
+     </package>
+    <!-- cms发布管理 -->
+    <package name="CmsManage" namespace="/cms" extends="custom-default">
+		<action name="*/*" method="{2}" class="com.steven.cms.action.{1}Action">
+		    <result name="list" >/cms/{1}/list.jsp</result>
+		    <result name="create" >/cms/{1}/create.jsp</result>
+		    <result name="edit" >/cms/{1}/edit.jsp</result>
+		    <result name="show" >/cms/{1}/show.jsp</result>
+		    <result name="list_action" type="redirect">/cms/{1}/list.do</result>
+		    <!-- json result -->
+		    <result name="jsonPageList" type="json">
+		      <param name="ignoreHierarchy">false</param>
+		      <param name="root">jsonResult</param>
+		    </result>
+		    <result name="jsonList" type="json">
+		      <param name="ignoreHierarchy">false</param>
+		      <param name="root">jsonResult.result</param>
+		    </result>
+		    <result name="treeList" type="json">
+		      <param name="ignoreHierarchy">false</param>
+		      <param name="root">jsonResult.result</param>
+		    </result>
+		    <result name="jsonResult" type="json">
+		      <param name="ignoreHierarchy">false</param>
+		      <param name="root">jsonResult</param>
+		    </result>
+		    <result name="report" type="jasper">
+		       <!-- 使用baseDir和template组合定位模板位置,也可以指定baseDir -->
+		       <param name="location">${report.baseDir}/${report.template}</param>
+		       <!-- 也可以直接使用location定位模板位置
+		       <param name="location">${report.location}</param>
+		        -->
+		       <param name="contentType">application/octet-stream;charset=utf-8</param>
+               <param name="contentDisposition">${report.contentDisposition}</param>
+               <param name="documentName">${report.reportName}</param>
+               <param name="dataSource">report.result</param>
+               <param name="reportParameters">report.params</param>
+               <param name="format">${report.format}</param>
+		    </result>
+		</action>
+    </package>
+    <!-- 静态文件整合 -->
+  <package name="static" namespace="/static" extends="struts-default">
+		<action name="**" class="com.steven.cms.action.StaticAction">
+		    <result >/static/static.jsp</result>
+		</action>			
+  </package>
+</struts>

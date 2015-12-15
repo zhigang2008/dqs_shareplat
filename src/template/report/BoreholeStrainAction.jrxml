@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="钻孔应变数据" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<template><![CDATA[$P{styleLocation}]]></template>
+	<style name="table_td" style="table_td_odd">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="styleLocation" class="java.lang.String"/>
+	<parameter name="reportTitle" class="java.lang.String"/>
+	<parameter name="userName" class="java.lang.String"/>
+	<parameter name="provinceCname" class="java.lang.String"/>
+	<parameter name="stationCname" class="java.lang.String"/>
+	<parameter name="itemCname" class="java.lang.String"/>
+	<parameter name="showWatermark" class="java.lang.Boolean"/>
+	<parameter name="watermark" class="java.lang.String"/>
+	<field name="stationId" class="java.lang.Long"/>
+	<field name="observeTime" class="java.util.Date"/>
+	<field name="observeValue" class="java.lang.Float"/>
+	<field name="colYear" class="java.lang.String"/>
+	<field name="id" class="java.lang.Long"/>
+	<background>
+		<band height="500" splitType="Stretch">
+			<printWhenExpression><![CDATA[$P{showWatermark}==true&&$P{watermark}!=null]]></printWhenExpression>
+			<image scaleImage="RealSize" hAlign="Center" vAlign="Middle" isUsingCache="true" isLazy="true" onErrorType="Icon" evaluationTime="Report">
+				<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="555" height="500"/>
+				<imageExpression><![CDATA[$P{watermark}]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<title>
+		<band height="66" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="555" height="66" backcolor="#0066CC"/>
+				<textField isBlankWhenNull="true">
+					<reportElement style="title" x="0" y="0" width="555" height="66"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$P{reportTitle}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="81" y="4" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{provinceCname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="202" y="4" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{stationCname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="324" y="4" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{itemCname}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="181" y="4" width="20" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="303" y="4" width="20" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[-]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<frame>
+				<reportElement style="table_th" x="0" y="0" width="555" height="20"/>
+				<staticText>
+					<reportElement style="cell_th" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[序号]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="cell_th" stretchType="RelativeToBandHeight" x="40" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[台站编号]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="cell_th" stretchType="RelativeToBandHeight" x="100" y="0" width="120" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[观测时间]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="cell_th" stretchType="RelativeToBandHeight" x="220" y="0" width="100" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[观测值]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="cell_th" stretchType="RelativeToBandHeight" x="320" y="0" width="100" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[年度]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<frame>
+				<reportElement style="table_td" x="0" y="0" width="555" height="20"/>
+				<textField>
+					<reportElement style="cell_td" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="cell_td" stretchType="RelativeToBandHeight" x="40" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{stationId}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="yyyy-MM-dd HH:mm" isBlankWhenNull="true">
+					<reportElement style="cell_td" stretchType="RelativeToBandHeight" x="100" y="0" width="120" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{observeTime}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="cell_td" stretchType="RelativeToBandHeight" x="220" y="0" width="100" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{observeValue}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="cell_td" stretchType="RelativeToBandHeight" x="320" y="0" width="100" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{colYear}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="30" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<textField pattern="yyyy/MM/dd HH:mm">
+				<reportElement style="foot_time" x="0" y="10" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="foot_page" x="200" y="10" width="120" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="foot_page" x="320" y="10" width="60" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="foot_user" x="440" y="10" width="60" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{userName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="40" splitType="Stretch"/>
+	</summary>
+</jasperReport>

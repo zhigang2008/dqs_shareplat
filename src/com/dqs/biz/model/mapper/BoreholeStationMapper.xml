@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="BoreholeStation">
+
+	<resultMap id="RM.BoreholeStation" type="com.dqs.biz.model.BoreholeStation">
+        <result property="provinceCode" column="PROVINCE_CODE"/>
+        <result property="provinceCname" column="PROVINCE_CNAME"/>
+        <result property="stationCode" column="STATION_CODE"/>
+        <result property="stationCname" column="STATION_CNAME"/>
+        <result property="itemCode" column="ITEM_CODE"/>
+        <result property="itemCname" column="ITEM_CNAME"/>
+        <result property="id" column="ID"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="BoreholeStation.columns">
+	    <![CDATA[
+		PROVINCE_CODE,PROVINCE_CNAME,STATION_CODE,STATION_CNAME,ITEM_CODE,ITEM_CNAME,ID
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="BoreholeStation.insert" >
+    <![CDATA[
+        INSERT INTO T_BOREHOLE_STATION (
+        	PROVINCE_CODE ,
+        	PROVINCE_CNAME ,
+        	STATION_CODE ,
+        	STATION_CNAME ,
+        	ITEM_CODE ,
+        	ITEM_CNAME ,
+        	ID 
+        ) VALUES (
+        	#{provinceCode,jdbcType=VARCHAR} ,
+        	#{provinceCname,jdbcType=VARCHAR} ,
+        	#{stationCode,jdbcType=VARCHAR} ,
+        	#{stationCname,jdbcType=VARCHAR} ,
+        	#{itemCode,jdbcType=VARCHAR} ,
+        	#{itemCname,jdbcType=VARCHAR} ,
+        	#{id,jdbcType=DECIMAL} 
+        )
+    ]]>
+		<!--oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL -->
+			
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+			SELECT S_T_BOREHOLE_STATION.nextval  FROM DUAL 
+        </selectKey>
+	</insert>
+    
+	<update id="BoreholeStation.update" >
+    <![CDATA[
+        UPDATE T_BOREHOLE_STATION SET
+	        PROVINCE_CODE = #{provinceCode,jdbcType=VARCHAR} ,
+	        PROVINCE_CNAME = #{provinceCname,jdbcType=VARCHAR} ,
+	        STATION_CODE = #{stationCode,jdbcType=VARCHAR} ,
+	        STATION_CNAME = #{stationCname,jdbcType=VARCHAR} ,
+	        ITEM_CODE = #{itemCode,jdbcType=VARCHAR} ,
+	        ITEM_CNAME = #{itemCname,jdbcType=VARCHAR} 
+        WHERE 
+	        ID = #{id} 
+    ]]>
+	</update>
+
+    <delete id="BoreholeStation.delete">
+    <![CDATA[
+        DELETE FROM T_BOREHOLE_STATION WHERE
+        ID = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="BoreholeStation.getById" resultMap="RM.BoreholeStation">
+		SELECT <include refid="BoreholeStation.columns" />
+	    <![CDATA[
+		    FROM T_BOREHOLE_STATION 
+	        WHERE 
+		        ID = #{id}
+	    ]]>
+	</select>
+	<!-- 无意义 <select id="BoreholeStation.getByCode"  parameterType="java.util.Map" resultMap="RM.BoreholeStation">
+		SELECT distinct ID,STATION_CODE,STATION_CNAME 
+	    <![CDATA[
+		    FROM T_BOREHOLE_STATION 
+	        WHERE 
+		        PROVINCE_CODE = #{provinceCode} 
+		        AND  STATION_CODE = #{stationCode} 
+	    ]]>
+	</select>
+	-->
+	 <select id="BoreholeStation.getStationByCode" resultMap="RM.BoreholeStation">
+		SELECT <include refid="BoreholeStation.columns" />
+	    <![CDATA[
+		    FROM T_BOREHOLE_STATION 
+	        WHERE 
+		        STATION_CODE = #{stationCode}
+	    ]]>
+	</select>
+	<!-- 不建议,仅提供给数据量较少的基表查询 -->
+	 <select id="BoreholeStation.findAll" resultMap="RM.BoreholeStation">
+		SELECT <include refid="BoreholeStation.columns" />
+	    <![CDATA[
+		    FROM T_BOREHOLE_STATION 
+	    ]]>
+	</select>
+	<!-- 基础代码,视情况添加状态识别 -->
+	 <select id="BoreholeStation.baseCode" resultMap="RM.BoreholeStation">
+		<![CDATA[
+		SELECT distinct PROVINCE_CODE,PROVINCE_CNAME from T_BOREHOLE_STATION order by PROVINCE_CNAME
+	    ]]>
+	</select>
+	
+	<sql id="BoreholeStation.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+	       <if test="@Ognl@isNotEmpty(provinceCode)">
+				AND PROVINCE_CODE = #{provinceCode}
+			</if>
+	       <if test="@Ognl@isNotEmpty(provinceCname)">
+				AND PROVINCE_CNAME like '%'||#{provinceCname}||'%'
+			</if>
+	       <if test="@Ognl@isNotEmpty(stationCode)">
+				AND STATION_CODE = #{stationCode}
+			</if>
+	       <if test="@Ognl@isNotEmpty(stationCname)">
+				AND STATION_CNAME like  '%'||#{stationCname}||'%'
+			</if>
+	       <if test="@Ognl@isNotEmpty(itemCode)">
+				AND ITEM_CODE = #{itemCode}
+			</if>
+	       <if test="@Ognl@isNotEmpty(itemCname)">
+				AND ITEM_CNAME like '%'||#{itemCname}||'%'
+			</if>
+	       <if test="@Ognl@isNotEmpty(id)">
+				AND ID = #{id}
+			</if>
+		</where>
+	</sql>
+		
+    <select id="BoreholeStation.findPage.count" resultType="long">
+        SELECT count(*) 
+        FROM 
+        (
+         SELECT DISTINCT PROVINCE_CODE,PROVINCE_CNAME,STATION_CODE,STATION_CNAME 
+         FROM T_BOREHOLE_STATION  
+         <include refid="BoreholeStation.findPage.where"/>
+         )
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="BoreholeStation.findPage" resultMap="RM.BoreholeStation">
+    	SELECT DISTINCT PROVINCE_CODE,PROVINCE_CNAME,STATION_CODE,STATION_CNAME
+	    FROM T_BOREHOLE_STATION 
+		<include refid="BoreholeStation.findPage.where"/>
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	<!-- 获取所有省份信息 -->
+	 <select id="BoreholeStation.getAllProvince" resultMap="RM.BoreholeStation">
+		<![CDATA[
+		SELECT distinct PROVINCE_CODE,PROVINCE_CNAME from T_BOREHOLE_STATION order by PROVINCE_CNAME
+	    ]]>
+	</select>
+	<!-- 获取所有台站信息 -->
+	 <select id="BoreholeStation.getStationInfo" resultMap="RM.BoreholeStation">
+		<![CDATA[
+		select distinct STATION_CODE,STATION_CNAME 
+		from T_BOREHOLE_STATION 
+		where PROVINCE_CODE=#{provinceCode} 
+        order by STATION_CNAME
+	    ]]>
+	</select>
+	<!-- 获取所有台站观测项信息 -->
+	 <select id="BoreholeStation.getItemInfo" resultMap="RM.BoreholeStation">
+		<![CDATA[
+		select distinct ITEM_CODE,ITEM_CNAME  
+		from T_BOREHOLE_STATION 
+		where STATION_CODE=#{stationCode} 
+        order by ITEM_CNAME desc
+	    ]]>
+	</select>
+	
+	<!-- 获取台站信息 -->
+	 <select id="BoreholeStation.getStationInfoByCode" resultMap="RM.BoreholeStation">
+		<![CDATA[
+		select distinct PROVINCE_CODE,PROVINCE_CNAME,STATION_CODE,STATION_CNAME 
+		from T_BOREHOLE_STATION 
+		where STATION_CODE=#{stationCode} 
+	    ]]>
+	</select>
+	<!-- 创建台站table -->
+	<update id="createStationTable">
+	   create table ${tableName} (
+	     STATION_ID INTEGER not null,
+         DATE_OBSV  DATE not null,
+         COL_YEAR   VARCHAR2(10),
+	    <foreach item="item" index="index" collection="items"  separator="," >
+	       ${item} NUMBER(15,5)
+	    </foreach>
+	   )
+	</update>
+	<!-- 调整台站table -->
+	<update id="updateStationTable">
+	   alter table ${tableName} 
+	   add  ${item} NUMBER(15,5)
+	</update>
+	<update id="BoreholeStation.updateStationInfo" >
+    <![CDATA[
+        UPDATE T_BOREHOLE_STATION SET
+            PROVINCE_CODE = #{provinceCode,jdbcType=VARCHAR} ,
+	        PROVINCE_CNAME = #{provinceCname,jdbcType=VARCHAR} ,
+	        STATION_CNAME = #{stationCname,jdbcType=VARCHAR}
+        WHERE 
+	       STATION_CODE=#{stationCode}  
+    ]]>
+	</update>
+	<!-- 删除台站table -->
+	<update id="dropStationTable">
+	   drop table ${tableName}
+	</update>
+</mapper>
+

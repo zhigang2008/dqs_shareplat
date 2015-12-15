@@ -1,0 +1,18 @@
+/* Selection of rules to make tiptip work in IE6 */
+
+#tiptip_content {
+  background-color: #000;
+  color: #fff;
+}
+#tiptip_arrow {
+  display:none;
+}
+#textInfo #desDiv {
+	PADDING-RIGHT: 20px;
+	PADDING-LEFT: 50px;
+	PADDING-BOTTOM: 5px;
+	OVERFLOW: auto;
+	LINE-HEIGHT: 200%;
+	PADDING-TOP: 0px;
+	TEXT-ALIGN: left
+}

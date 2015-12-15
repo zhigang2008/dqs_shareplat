@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="RsMaps">
+
+	<resultMap id="RM.RsMaps" type="com.dqs.biz.model.RsMaps">
+        <result property="libId" column="LIB_ID"/>
+        <result property="mapId" column="MAP_ID"/>
+        <result property="mapName" column="MAP_NAME"/>
+        <result property="mapLocation" column="MAP_LOCATION"/>
+        <result property="uploadTime" column="UPLOAD_TIME"/>
+        <result property="seqno" column="SEQNO"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="RsMaps.columns">
+	    <![CDATA[
+		LIB_ID,MAP_ID,MAP_NAME,MAP_LOCATION,UPLOAD_TIME,SEQNO
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="RsMaps.insert" >
+    <![CDATA[
+        INSERT INTO T_RS_MAPS (
+        	LIB_ID ,
+        	MAP_ID ,
+        	MAP_NAME ,
+        	MAP_LOCATION ,
+        	UPLOAD_TIME ,
+        	SEQNO 
+        ) VALUES (
+        	#{libId,jdbcType=VARCHAR} ,
+        	#{mapId,jdbcType=VARCHAR} ,
+        	#{mapName,jdbcType=VARCHAR} ,
+        	#{mapLocation,jdbcType=VARCHAR} ,
+        	#{uploadTime,jdbcType=TIMESTAMP} ,
+        	#{seqno,jdbcType=VARCHAR} 
+        )
+    ]]>
+	
+	</insert>
+    
+	<update id="RsMaps.update" >
+    <![CDATA[
+        UPDATE T_RS_MAPS SET
+	        LIB_ID = #{libId,jdbcType=VARCHAR} ,
+	        MAP_ID = #{mapId,jdbcType=VARCHAR} ,
+	        MAP_NAME = #{mapName,jdbcType=VARCHAR} ,
+	        MAP_LOCATION = #{mapLocation,jdbcType=VARCHAR} ,
+	        UPLOAD_TIME = #{uploadTime,jdbcType=TIMESTAMP} 
+        WHERE 
+	        SEQNO = #{seqno} 
+    ]]>
+	</update>
+
+    <delete id="RsMaps.delete">
+    <![CDATA[
+        DELETE FROM T_RS_MAPS WHERE
+        SEQNO = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="RsMaps.getById" resultMap="RM.RsMaps">
+		SELECT <include refid="RsMaps.columns" />
+	    <![CDATA[
+		    FROM T_RS_MAPS 
+	        WHERE 
+		        SEQNO = #{id} 
+	    ]]>
+	</select>
+	<delete id="RsMaps.deleteByModel">
+    <![CDATA[
+        DELETE FROM T_RS_MAPS WHERE
+        LIB_ID = #{libId}  AND 
+        MAP_ID = #{mapId} 
+    ]]>
+    </delete>
+    
+    <select id="RsMaps.getByModel" resultMap="RM.RsMaps">
+		SELECT <include refid="RsMaps.columns" />
+	    <![CDATA[
+		    FROM T_RS_MAPS 
+	        WHERE 
+		        LIB_ID = #{libId}  AND 
+		        MAP_ID = #{mapId} 
+	    ]]>
+	</select>
+	<!-- 不建议,仅提供给数据量较少的基表查询 -->
+	 <select id="RsMaps.findAll" resultMap="RM.RsMaps">
+		SELECT <include refid="RsMaps.columns" />
+	    <![CDATA[
+		    FROM T_RS_MAPS 
+	    ]]>
+	</select>
+	<!-- 基础代码,视情况添加状态识别 -->
+	 <select id="RsMaps.baseCode" resultMap="RM.RsMaps">
+		SELECT <include refid="RsMaps.columns" />
+	    <![CDATA[
+		    FROM T_RS_MAPS 
+	    ]]>
+	    <!-- 视情况添加where条件 -->
+	</select>
+	
+	<sql id="RsMaps.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+	       <if test="@Ognl@isNotEmpty(libId)">
+				AND LIB_ID = #{libId}
+			</if>
+	       <if test="@Ognl@isNotEmpty(mapId)">
+				AND MAP_ID = #{mapId}
+			</if>
+	       <if test="@Ognl@isNotEmpty(mapName)">
+				AND MAP_NAME like  '%'||#{mapName}||'%'
+			</if>
+	       <if test="@Ognl@isNotEmpty(mapLocation)">
+				AND MAP_LOCATION = #{mapLocation}
+			</if>
+	       <if test="@Ognl@isNotEmpty(uploadTimeBegin)">
+				AND UPLOAD_TIME >= #{uploadTimeBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(uploadTimeEnd)">
+				AND UPLOAD_TIME &lt;= #{uploadTimeEnd}
+		   </if>
+	       <if test="@Ognl@isNotEmpty(seqno)">
+				AND SEQNO = #{seqno}
+			</if>
+		</where>
+	</sql>
+		
+    <select id="RsMaps.findPage.count" resultType="long">
+        SELECT count(*) FROM T_RS_MAPS 
+		<include refid="RsMaps.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="RsMaps.findPage" resultMap="RM.RsMaps">
+    	SELECT <include refid="RsMaps.columns" />
+	    FROM T_RS_MAPS 
+		<include refid="RsMaps.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+  <select id="RsMaps.getMapCountByLib" resultType="long">
+        SELECT count(*) FROM T_RS_MAPS 
+         WHERE  LIB_ID = #{libId} 
+		   
+    </select>
+	
+</mapper>
+

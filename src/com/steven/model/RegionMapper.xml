@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="Region">
+
+	<resultMap id="RM.Region" type="com.steven.core.model.Region">
+        <result property="id" column="ID"/>
+        <result property="regionCode" column="REGION_CODE"/>
+        <result property="regionName" column="REGION_NAME"/>
+        <result property="rome" column="ROME"/>
+        <result property="zmCode" column="ZM_CODE"/>
+        <result property="parentId" column="PARENT_ID"/>
+        <result property="memo" column="MEMO"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Region.columns">
+	    <![CDATA[
+		ID,REGION_CODE,REGION_NAME,ROME,ZM_CODE,PARENT_ID,MEMO
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="Region.insert" >
+    <![CDATA[
+        INSERT INTO T_SYS_REGION (
+        	ID ,
+        	REGION_CODE ,
+        	REGION_NAME ,
+        	ROME ,
+        	ZM_CODE ,
+        	PARENT_ID ,
+        	MEMO 
+        ) VALUES (
+        	#{id,jdbcType=DECIMAL} ,
+        	#{regionCode,jdbcType=VARCHAR} ,
+        	#{regionName,jdbcType=VARCHAR} ,
+        	#{rome,jdbcType=VARCHAR} ,
+        	#{zmCode,jdbcType=VARCHAR} ,
+        	#{parentId,jdbcType=DECIMAL} ,
+        	#{memo,jdbcType=VARCHAR} 
+        )
+    ]]>
+		<!--oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL -->
+			
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+			SELECT S_T_SYS_REGION.nextval  FROM DUAL 
+        </selectKey>
+	</insert>
+    
+	<update id="Region.update" >
+    <![CDATA[
+        UPDATE T_SYS_REGION SET
+	        REGION_CODE = #{regionCode,jdbcType=VARCHAR} ,
+	        REGION_NAME = #{regionName,jdbcType=VARCHAR} ,
+	        ROME = #{rome,jdbcType=VARCHAR} ,
+	        ZM_CODE = #{zmCode,jdbcType=VARCHAR} ,
+	        PARENT_ID = #{parentId,jdbcType=DECIMAL} ,
+	        MEMO = #{memo,jdbcType=VARCHAR} 
+        WHERE 
+	        ID = #{id} 
+    ]]>
+	</update>
+
+    <delete id="Region.delete">
+    <![CDATA[
+        DELETE FROM T_SYS_REGION WHERE
+        ID = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="Region.getById" resultMap="RM.Region">
+		SELECT <include refid="Region.columns" />
+	    <![CDATA[
+		    FROM T_SYS_REGION 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+	</select>
+	<!-- 不建议,仅提供给数据量较少的基表查询 -->
+	 <select id="Region.findAll" resultMap="RM.Region">
+		SELECT <include refid="Region.columns" />
+	    <![CDATA[
+		    FROM T_SYS_REGION 
+	    ]]>
+	</select>
+	<!-- 基础代码,视情况添加状态识别 -->
+	 <select id="Region.baseCode" resultMap="RM.Region">
+		SELECT <include refid="Region.columns" />
+	    <![CDATA[
+		    FROM T_SYS_REGION 
+		    WHERE parent_id=0
+	    ]]>
+	    <!-- 视情况添加where条件 -->
+	</select>
+	
+	<sql id="Region.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+	       <if test="@Ognl@isNotEmpty(id)">
+				AND ID = #{id}
+			</if>
+	       <if test="@Ognl@isNotEmpty(regionCode)">
+				AND REGION_CODE = #{regionCode}
+			</if>
+	       <if test="@Ognl@isNotEmpty(regionName)">
+				AND REGION_NAME = #{regionName}
+			</if>
+	       <if test="@Ognl@isNotEmpty(rome)">
+				AND ROME = #{rome}
+			</if>
+	       <if test="@Ognl@isNotEmpty(zmCode)">
+				AND ZM_CODE = #{zmCode}
+			</if>
+	       <if test="@Ognl@isNotEmpty(parentId)">
+				AND PARENT_ID = #{parentId}
+			</if>
+	       <if test="@Ognl@isNotEmpty(memo)">
+				AND MEMO = #{memo}
+			</if>
+		</where>
+	</sql>
+		
+    <select id="Region.findPage.count" resultType="long">
+        SELECT count(*) FROM T_SYS_REGION 
+		<include refid="Region.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="Region.findPage" resultMap="RM.Region">
+    	SELECT <include refid="Region.columns" />
+	    FROM T_SYS_REGION 
+		<include refid="Region.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+    <select id="Region.getByRegionCode" resultMap="RM.Region" parameterType="java.lang.String">
+	    SELECT <include refid="Region.columns"/>
+	    <![CDATA[
+	        FROM T_SYS_REGION where REGION_CODE = #{regionCode}
+	    ]]>
+    </select>
+    
+    <!-- 获取顶级地区 -->
+     <select id="Region.getTopRegions" resultMap="RM.Region">
+		SELECT <include refid="Region.columns" />
+	    <![CDATA[
+		    FROM T_SYS_REGION 
+		    WHERE parent_id=0
+	    ]]>
+	    <!-- where region_code like '%0000' -->
+	</select>
+	<!-- 获取下级地区 -->
+     <select id="Region.getChilds" resultMap="RM.Region">
+		SELECT <include refid="Region.columns" />
+	    <![CDATA[
+		    FROM T_SYS_REGION 
+		    WHERE parent_id=${id}
+	    ]]>
+	    <!-- where region_code like '%0000' -->
+	</select>
+</mapper>
+

@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="Station">
+
+	<resultMap id="RM.Station" type="com.dqs.biz.model.Station">
+        <result property="id" column="ID"/>
+        <result property="regionCode" column="REGION_CODE"/>
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+        <result property="longitude" column="LONGITUDE"/>
+        <result property="latitude" column="LATITUDE"/>
+        <result property="hight" column="HIGHT"/>
+        <result property="unit" column="UNIT"/>
+        <result property="wellTypeCode" column="WELL_TYPE_CODE"/>
+        <result property="wellDepth" column="WELL_DEPTH"/>
+        <result property="observateDepth" column="OBSERVATE_DEPTH"/>
+        <result property="lithology" column="LITHOLOGY"/>
+        <result property="temperature" column="TEMPERATURE"/>
+        <result property="observateTime" column="OBSERVATE_TIME"/>
+        <result property="stationTypeCode" column="STATION_TYPE_CODE"/>
+        <result property="zmCode" column="ZM_CODE"/>
+        <association property="wellType" column="WELL_TYPE_CODE" select="WellType.getById"/>
+        <association property="stationType" column="STATION_TYPE_CODE" select="StationType.getById"/>
+        <association property="region" column="REGION_CODE" select="Region.getByRegionCode"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Station.columns">
+	    <![CDATA[
+		ID,REGION_CODE,CODE,NAME,LONGITUDE,LATITUDE,HIGHT,UNIT,WELL_TYPE_CODE,WELL_DEPTH,OBSERVATE_DEPTH,LITHOLOGY,TEMPERATURE,OBSERVATE_TIME,STATION_TYPE_CODE,ZM_CODE
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="Station.insert" >
+    <![CDATA[
+        INSERT INTO T_STATION (
+        	ID ,
+        	REGION_CODE ,
+        	CODE ,
+        	NAME ,
+        	LONGITUDE ,
+        	LATITUDE ,
+        	HIGHT ,
+        	UNIT ,
+        	WELL_TYPE_CODE ,
+        	WELL_DEPTH ,
+        	OBSERVATE_DEPTH ,
+        	LITHOLOGY ,
+        	TEMPERATURE ,
+        	OBSERVATE_TIME ,
+        	STATION_TYPE_CODE ,
+        	ZM_CODE 
+        ) VALUES (
+        	#{id,jdbcType=DECIMAL} ,
+        	#{regionCode,jdbcType=VARCHAR} ,
+        	#{code,jdbcType=VARCHAR} ,
+        	#{name,jdbcType=VARCHAR} ,
+        	#{longitude,jdbcType=VARCHAR} ,
+        	#{latitude,jdbcType=VARCHAR} ,
+        	#{hight,jdbcType=DECIMAL} ,
+        	#{unit,jdbcType=VARCHAR} ,
+        	#{wellTypeCode,jdbcType=DECIMAL} ,
+        	#{wellDepth,jdbcType=DECIMAL} ,
+        	#{observateDepth,jdbcType=DECIMAL} ,
+        	#{lithology,jdbcType=VARCHAR} ,
+        	#{temperature,jdbcType=DECIMAL} ,
+        	#{observateTime,jdbcType=VARCHAR} ,
+        	#{stationTypeCode,jdbcType=DECIMAL} ,
+        	#{zmCode,jdbcType=VARCHAR} 
+        )
+    ]]>
+		<!--oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL -->
+			
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+			SELECT S_T_STATION.nextval  FROM DUAL 
+        </selectKey>
+	</insert>
+    
+	<update id="Station.update" >
+    <![CDATA[
+        UPDATE T_STATION SET
+	        REGION_CODE = #{regionCode,jdbcType=VARCHAR} ,
+	        CODE = #{code,jdbcType=VARCHAR} ,
+	        NAME = #{name,jdbcType=VARCHAR} ,
+	        LONGITUDE = #{longitude,jdbcType=VARCHAR} ,
+	        LATITUDE = #{latitude,jdbcType=VARCHAR} ,
+	        HIGHT = #{hight,jdbcType=DECIMAL} ,
+	        UNIT = #{unit,jdbcType=VARCHAR} ,
+	        WELL_TYPE_CODE = #{wellTypeCode,jdbcType=DECIMAL} ,
+	        WELL_DEPTH = #{wellDepth,jdbcType=DECIMAL} ,
+	        OBSERVATE_DEPTH = #{observateDepth,jdbcType=DECIMAL} ,
+	        LITHOLOGY = #{lithology,jdbcType=VARCHAR} ,
+	        TEMPERATURE = #{temperature,jdbcType=DECIMAL} ,
+	        OBSERVATE_TIME = #{observateTime,jdbcType=VARCHAR} ,
+	        STATION_TYPE_CODE = #{stationTypeCode,jdbcType=DECIMAL} ,
+	        ZM_CODE = #{zmCode,jdbcType=VARCHAR} 
+        WHERE 
+	        ID = #{id} 
+    ]]>
+	</update>
+
+    <delete id="Station.delete">
+    <![CDATA[
+        DELETE FROM T_STATION WHERE
+        ID = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="Station.getById" resultMap="RM.Station">
+		SELECT <include refid="Station.columns" />
+	    <![CDATA[
+		    FROM T_STATION 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+	</select>
+	<!-- 不建议,仅提供给数据量较少的基表查询 -->
+	 <select id="Station.findAll" resultMap="RM.Station">
+		SELECT <include refid="Station.columns" />
+	    <![CDATA[
+		    FROM T_STATION 
+	    ]]>
+	</select>
+	<!-- 基础代码,视情况添加状态识别 -->
+	 <select id="Station.baseCode" resultMap="RM.Station">
+		SELECT <include refid="Station.columns" />
+	    <![CDATA[
+		    FROM T_STATION 
+	    ]]>
+	    <!-- 视情况添加where条件 -->
+	</select>
+	
+	<sql id="Station.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+	       <if test="@Ognl@isNotEmpty(id)">
+				AND ID = #{id}
+			</if>
+	       <if test="@Ognl@isNotEmpty(regionCode)">
+				AND REGION_CODE = #{regionCode}
+			</if>
+	       <if test="@Ognl@isNotEmpty(code)">
+				AND CODE = #{code}
+			</if>
+	       <if test="@Ognl@isNotEmpty(name)">
+				AND NAME like '%'||#{name}||'%'
+			</if>
+	       <if test="@Ognl@isNotEmpty(longitude)">
+				AND LONGITUDE = #{longitude}
+			</if>
+	       <if test="@Ognl@isNotEmpty(latitude)">
+				AND LATITUDE = #{latitude}
+			</if>
+	       <if test="@Ognl@isNotEmpty(hight)">
+				AND HIGHT = #{hight}
+			</if>
+	       <if test="@Ognl@isNotEmpty(unit)">
+				AND UNIT = #{unit}
+			</if>
+	       <if test="@Ognl@isNotEmpty(wellTypeCode)">
+				AND WELL_TYPE_CODE = #{wellTypeCode}
+			</if>
+	       <if test="@Ognl@isNotEmpty(wellDepth)">
+				AND WELL_DEPTH = #{wellDepth}
+			</if>
+	       <if test="@Ognl@isNotEmpty(observateDepth)">
+				AND OBSERVATE_DEPTH = #{observateDepth}
+			</if>
+	       <if test="@Ognl@isNotEmpty(lithology)">
+				AND LITHOLOGY = #{lithology}
+			</if>
+	       <if test="@Ognl@isNotEmpty(temperature)">
+				AND TEMPERATURE = #{temperature}
+			</if>
+	       <if test="@Ognl@isNotEmpty(observateTime)">
+				AND OBSERVATE_TIME = #{observateTime}
+			</if>
+	       <if test="@Ognl@isNotEmpty(stationTypeCode)">
+				AND STATION_TYPE_CODE = #{stationTypeCode}
+			</if>
+	       <if test="@Ognl@isNotEmpty(zmCode)">
+				AND ZM_CODE = #{zmCode}
+			</if>
+		</where>
+	</sql>
+		
+    <select id="Station.findPage.count" resultType="long">
+        SELECT count(*) FROM T_STATION 
+		<include refid="Station.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="Station.findPage" resultMap="RM.Station">
+    	SELECT <include refid="Station.columns" />
+	    FROM T_STATION 
+		<include refid="Station.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+    <!-- 获取所有省份信息 -->
+	 <select id="Station.getAllProvince" resultMap="RM.Station">
+		 <![CDATA[
+		    SELECT DISTINCT REGION_CODE,ZM_CODE 
+	   	    FROM T_STATION 
+		    ORDER BY REGION_CODE
+	    ]]>
+	</select>
+	<!-- 不建议,仅提供给数据量较少的基表查询 -->
+	 <select id="Station.getStationInfo" resultMap="RM.Station">
+		SELECT <include refid="Station.columns" />
+	    <![CDATA[
+		    FROM T_STATION 
+		    WHERE ZM_CODE=#{zmCode}
+	    ]]>
+	</select>
+	
+</mapper>
+

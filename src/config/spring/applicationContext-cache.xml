@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+	default-lazy-init="true">
+	<!--缓存-->
+	<bean id="myCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation">
+			<value>classpath:ehcache.xml</value>
+		</property>
+	</bean>
+	<!--应用缓存-->
+	<bean id="myEhCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref local="myCacheManager"/>
+		</property>
+		<property name="cacheName">
+			<value>com.steven.application.cache</value>
+		</property>
+		<qualifier value="application"/>
+	</bean>
+	
+	<!-- 缓存拦截 -->
+	<bean id="methodCacheInterceptor" class="com.steven.framework.common.cache.MethodCacheInterceptor">
+	<property name="cache">
+		<ref local="myEhCache" />
+	 </property>
+    </bean>
+    
+    <!-- 缓存清理 -->
+	<bean id="methodCacheAfterAdvice" class="com.steven.framework.common.cache.MethodCacheAfterAdvice">
+	<property name="cache">
+		<ref local="myEhCache" />
+	</property>
+    </bean>
+    
+    <!-- AOP切面 -->
+	<bean id="methodCachePointCut"
+		class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice">
+			<ref local="methodCacheInterceptor" />
+		</property>
+		<property name="patterns">
+			<list>
+				<value>com.steven.core.service.*Manager.getBaseCode</value>
+				<value>com.dqs.biz.service.*Manager.getBaseCode</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="methodCachePointCutAdvice"
+		class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice">
+			<ref local="methodCacheAfterAdvice" />
+		</property>
+		<property name="patterns">
+			<list>
+				<value>com.steven.core.service.*Manager.saveOrUpdate</value>
+				<value>com.steven.core.service.*Manager.save</value>
+				<value>com.steven.core.service.*Manager.removeById</value>
+				<value>com.steven.core.service.*Manager.update</value>
+				<value>com.dqs.biz.service.*Manager.saveOrUpdate</value>
+				<value>com.dqs.biz.service.*Manager.save</value>
+				<value>com.dqs.biz.service.*Manager.removeById</value>
+				<value>com.dqs.biz.service.*Manager.update</value>
+			</list>
+		</property>
+	</bean>
+</beans>

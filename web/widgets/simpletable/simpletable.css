@@ -1,0 +1,184 @@
+.gridTable {
+	margin: 5px 0 0 0;
+	padding: 0;
+	border: 0px solid #84A0C4;
+}
+
+/** grid body */
+.gridBody {
+	font-size: 12px;
+	font-family: "宋体", Arial, sans-serif;
+}
+.gridTable a {
+	text-decoration: none;
+}
+
+.gridBody thead tr { 
+	background: #A3C0E8 url('images/header-bg.gif') repeat-x left	bottom;
+	border-bottom: 1px solid #A3C0E8;
+
+  }
+.gridBody th { 
+	/*	border-left: 1px solid silver;
+	border-bottom: 1px solid silver;
+	vertical-align: middle;
+	background-color: #E5E5E5;
+	padding:0 10px 0 0;
+	color: #15428B;
+*/
+	font-size:14px;
+	height: 22px;
+	line-height: 22px;
+	overflow: hidden;
+	vertical-align: middle;
+	border-bottom: 1px solid #A3C0E8;
+	border-right: 1px solid #A3C0E8;
+    cursor: pointer;
+    text-align:center;
+}
+
+.gridBody td {
+	border-bottom: 1px solid #DAE6F5;
+	border-right: 1px solid #DAE6F5;
+	text-align: center;
+	color: black;
+	height:18px;
+	line-height:18px;
+}
+
+/** grid header sort */
+.gridBody  th.sort {
+	
+}
+
+.gridBody  th.sort.desc {
+	background:  url(images/icon-sort-desc.gif) center right no-repeat  transparent !important;
+}
+
+.gridBody  th.sort.asc {
+	background:  url(images/icon-sort-asc.gif) center right no-repeat  transparent !important;
+}
+
+/** mouse hove over sort header */
+.gridBody .tableHeaderSortHover {
+	/**background-color: #f5f5f5 !important;*/
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.gridBody  td img {
+	border:0;
+}
+
+/** gridBody row colors */
+.gridBody .odd {
+	background-color: #FFFFFF;
+}
+
+.gridBody .even {
+	background-color: #F8F8F8;
+}
+
+.gridBody .highlight {
+	background-color: #EAF3FF !important;
+}
+
+/** grid toolbar */
+
+.gridToolbar .box {
+	text-align:center;
+	vertical-align: middle;
+}
+.gridToolbar .box div {
+	display: inline;
+	float: left;
+}
+.gridToolbar .bar-separator {
+    border-left: 1px solid #9AC6FF;
+    border-right: 1px solid white;
+    float: left;
+    height: 18px;
+    line-height:18px;
+    margin: 3px;
+}
+
+.gridToolbar .box .leftControls {
+	background: url('images/bar-bg.gif') repeat-x left bottom;
+	vertical-align: middle;
+	height:24px;
+	line-height:24px;
+	padding-left:10px;
+	font-size:12px;
+	font-family:"微软雅黑","黑体","宋体", Arial, sans-serif;
+	overflow: hidden;
+	
+}
+
+.gridToolbar .box .leftControls img {
+   border:0;
+   margin-top:4px;
+   display: inline;
+}
+
+.gridToolbar .box .paginationControls {
+	float: right;
+	vertical-align: middle;
+	height:24px;
+	line-height:24px;
+}
+.gridToolbar .box .paginationControls div {
+   
+}
+
+.gridToolbar  .buttonLabel {
+	margin: 0 12px;
+	font-size: 12px;
+}
+
+
+.gridToolbar td {
+	background: url('images/bar-bg.gif') repeat-x left bottom;
+}
+
+.gridBody .odd a, .even a {
+	
+	color: 005C9C !important;
+}
+
+.gridToolbar .box .paginationControls  a {
+    float: left;
+    height:24px;
+    width:22px;
+    text-align:center;
+    vertical-align: middle;
+   /* overflow: hidden;*/
+}
+
+.gridToolbar .box .paginationControls  a:hover, .gridToolbar .box .paginationControls  a:active {
+    background: url('images/bar-button-over.gif') no-repeat center;
+    text-decoration: none;
+    font-weight:bold;
+}
+.gridToolbar .box .paginationControls img {
+   border:0;
+   margin-top:5px;
+   display: inline;
+}
+
+.gridToolbar .box .paginationControls .pagelist a {
+    -moz-border-radius: 5px 5px 5px 5px;
+    border: 1px solid #A3C0E8;
+    height:22px;
+    line-height:22px;
+    width:22px;
+    float: left;
+    color:#005AA0;
+    float: left;
+}
+.gridToolbar .box .paginationControls .pagelist .current{
+    line-height:24px;
+    width:24px;
+    float: left;
+    font-weight:bold;
+    color:#000000;
+}

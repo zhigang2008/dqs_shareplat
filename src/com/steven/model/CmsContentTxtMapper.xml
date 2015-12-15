@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="CmsContentTxt">
+
+	<resultMap id="RM.CmsContentTxt" type="com.steven.cms.model.CmsContentTxt">
+        <result property="contentId" column="CONTENT_ID"/>
+        <result property="txt" column="TXT"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CmsContentTxt.columns">
+	    <![CDATA[
+		CONTENT_ID,TXT
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="CmsContentTxt.insert" >
+    <![CDATA[
+        INSERT INTO T_CMS_CONTENT_TXT (
+        	CONTENT_ID ,
+        	TXT 
+        ) VALUES (
+        	#{contentId,jdbcType=DECIMAL} ,
+        	#{txt,jdbcType=CLOB} 
+        )
+    ]]>
+	</insert>
+    
+	<update id="CmsContentTxt.update" >
+    <![CDATA[
+        UPDATE T_CMS_CONTENT_TXT SET
+	        TXT = #{txt,jdbcType=CLOB} 
+        WHERE 
+	        CONTENT_ID = #{contentId} 
+    ]]>
+	</update>
+
+    <delete id="CmsContentTxt.delete">
+    <![CDATA[
+        DELETE FROM T_CMS_CONTENT_TXT WHERE
+        CONTENT_ID = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="CmsContentTxt.getById" resultMap="RM.CmsContentTxt">
+		SELECT <include refid="CmsContentTxt.columns" />
+	    <![CDATA[
+		    FROM T_CMS_CONTENT_TXT 
+	        WHERE 
+		        CONTENT_ID = #{id} 
+	    ]]>
+	</select>
+	<!-- 不建议,仅提供给数据量较少的基表查询 -->
+	 <select id="CmsContentTxt.findAll" resultMap="RM.CmsContentTxt">
+		SELECT <include refid="CmsContentTxt.columns" />
+	    <![CDATA[
+		    FROM T_CMS_CONTENT_TXT 
+	    ]]>
+	</select>
+	
+	<sql id="CmsContentTxt.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+	       <if test="@Ognl@isNotEmpty(contentId)">
+				AND CONTENT_ID = #{contentId}
+			</if>
+	       <if test="@Ognl@isNotEmpty(txt)">
+				AND TXT = #{txt}
+			</if>
+		</where>
+	</sql>
+		
+    <select id="CmsContentTxt.findPage.count" resultType="long">
+        SELECT count(*) FROM T_CMS_CONTENT_TXT 
+		<include refid="CmsContentTxt.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="CmsContentTxt.findPage" resultMap="RM.CmsContentTxt">
+    	SELECT <include refid="CmsContentTxt.columns" />
+	    FROM T_CMS_CONTENT_TXT 
+		<include refid="CmsContentTxt.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	
+</mapper>
+

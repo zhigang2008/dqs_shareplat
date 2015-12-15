@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="CmsBoardStatus">
+
+	<resultMap id="RM.CmsBoardStatus" type="com.steven.cms.model.CmsBoardStatus">
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CmsBoardStatus.columns">
+	    <![CDATA[
+		CODE,NAME
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="CmsBoardStatus.insert" >
+    <![CDATA[
+        INSERT INTO T_CMS_BOARD_STATUS (
+        	CODE ,
+        	NAME 
+        ) VALUES (
+        	#{code,jdbcType=DECIMAL} ,
+        	#{name,jdbcType=VARCHAR} 
+        )
+    ]]>
+		<!--oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL -->
+			
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="code">
+			SELECT S_T_CMS_BOARD_STATUS.nextval  FROM DUAL 
+        </selectKey>
+	</insert>
+    
+	<update id="CmsBoardStatus.update" >
+    <![CDATA[
+        UPDATE T_CMS_BOARD_STATUS SET
+	        NAME = #{name,jdbcType=VARCHAR} 
+        WHERE 
+	        CODE = #{code} 
+    ]]>
+	</update>
+
+    <delete id="CmsBoardStatus.delete">
+    <![CDATA[
+        DELETE FROM T_CMS_BOARD_STATUS WHERE
+        CODE = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="CmsBoardStatus.getById" resultMap="RM.CmsBoardStatus">
+		SELECT <include refid="CmsBoardStatus.columns" />
+	    <![CDATA[
+		    FROM T_CMS_BOARD_STATUS 
+	        WHERE 
+		        CODE = #{id} 
+	    ]]>
+	</select>
+	<!-- 不建议,仅提供给数据量较少的基表查询 -->
+	 <select id="CmsBoardStatus.findAll" resultMap="RM.CmsBoardStatus">
+		SELECT <include refid="CmsBoardStatus.columns" />
+	    <![CDATA[
+		    FROM T_CMS_BOARD_STATUS 
+	    ]]>
+	</select>
+	<!-- 基础代码,视情况添加状态识别 -->
+	 <select id="CmsBoardStatus.baseCode" resultMap="RM.CmsBoardStatus">
+		SELECT <include refid="CmsBoardStatus.columns" />
+	    <![CDATA[
+		    FROM T_CMS_BOARD_STATUS 
+	    ]]>
+	    <!-- 视情况添加where条件 -->
+	</select>
+	
+	<sql id="CmsBoardStatus.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+	       <if test="@Ognl@isNotEmpty(code)">
+				AND CODE = #{code}
+			</if>
+	       <if test="@Ognl@isNotEmpty(name)">
+				AND NAME = #{name}
+			</if>
+		</where>
+	</sql>
+		
+    <select id="CmsBoardStatus.findPage.count" resultType="long">
+        SELECT count(*) FROM T_CMS_BOARD_STATUS 
+		<include refid="CmsBoardStatus.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="CmsBoardStatus.findPage" resultMap="RM.CmsBoardStatus">
+    	SELECT <include refid="CmsBoardStatus.columns" />
+	    FROM T_CMS_BOARD_STATUS 
+		<include refid="CmsBoardStatus.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	
+</mapper>
+

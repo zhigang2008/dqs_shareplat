@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="钻孔地温" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="91a98415-595c-4c8e-a41f-97bcf2657359">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<template><![CDATA[$P{styleLocation}]]></template>
+	<style name="table_td" style="table_td_odd">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="styleLocation" class="java.lang.String"/>
+	<parameter name="reportTitle" class="java.lang.String"/>
+	<parameter name="userName" class="java.lang.String"/>
+	<parameter name="showWatermark" class="java.lang.Boolean"/>
+	<parameter name="watermark" class="java.lang.String"/>
+	<parameter name="regionName" class="java.lang.String"/>
+	<parameter name="stationName" class="java.lang.String"/>
+	<field name="id" class="java.lang.Long"/>
+	<field name="stationId" class="java.lang.Long"/>
+	<field name="time" class="java.util.Date"/>
+	<field name="temperature" class="java.lang.Float"/>
+	<field name="dataYear" class="java.lang.String"/>
+	<background>
+		<band height="500" splitType="Stretch">
+			<printWhenExpression><![CDATA[$P{showWatermark}==true&&$P{watermark}!=null]]></printWhenExpression>
+			<image scaleImage="RealSize" hAlign="Center" vAlign="Middle" isUsingCache="true" isLazy="true" onErrorType="Icon" evaluationTime="Report">
+				<reportElement uuid="4a7e70a9-5765-49e7-b278-dccdc1cc7685" positionType="Float" mode="Opaque" x="0" y="0" width="555" height="500"/>
+				<imageExpression><![CDATA[$P{watermark}]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<title>
+		<band height="66" splitType="Stretch">
+			<frame>
+				<reportElement uuid="7ee6a724-1e23-482a-870f-2ece46b24e26" x="0" y="0" width="555" height="66" backcolor="#0066CC"/>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="1a50a5fb-2434-4728-8dee-a3345dc71242" style="title" x="0" y="0" width="555" height="66"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$P{reportTitle}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement uuid="883c22f5-ab00-41d0-895f-feea1d9937b2" x="154" y="3" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{regionName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8bdb8086-845b-4257-892c-8cec52a8996d" x="275" y="3" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{stationName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="57fe516d-af0f-4df5-96b5-1539ae1a16d0" x="254" y="3" width="20" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[-]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<frame>
+				<reportElement uuid="c390baf5-de4c-44f4-a92e-5d3afd68c4e2" style="table_th" x="0" y="0" width="555" height="20"/>
+				<staticText>
+					<reportElement uuid="20dc27e3-8bec-47db-a804-c582cd88dc14" style="cell_th" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[序号]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="e8794fad-d402-4a02-95ed-1ef38bbe14dd" style="cell_th" stretchType="RelativeToBandHeight" x="40" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[台站编号]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="fc255d02-6e1c-45da-8af6-38d4c2fe6769" style="cell_th" stretchType="RelativeToBandHeight" x="100" y="0" width="140" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[观测时间]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="aae6e424-b333-4fd6-a164-594b653aa6a4" style="cell_th" stretchType="RelativeToBandHeight" x="240" y="0" width="140" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[温度]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="33a06c38-451e-44f2-ae17-7a86b7df3174" style="cell_th" stretchType="RelativeToBandHeight" x="380" y="0" width="100" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[年度]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<frame>
+				<reportElement uuid="30d02a67-e1af-4bf7-99b4-decd31b99810" style="table_td" x="0" y="0" width="555" height="20"/>
+				<textField>
+					<reportElement uuid="66b81708-c4ff-407c-b649-d133c3db41d5" style="cell_td" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="de3be2dc-e225-45e6-806e-8c46cf00405c" style="cell_td" stretchType="RelativeToBandHeight" x="40" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{stationId}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="yyyy-MM-dd HH:mm" isBlankWhenNull="true">
+					<reportElement uuid="a4d96b04-fa85-49a1-9cb7-fc590318e20c" style="cell_td" stretchType="RelativeToBandHeight" x="100" y="0" width="140" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{time}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="df6d6190-e0a9-420a-b2af-93102814a288" style="cell_td" stretchType="RelativeToBandHeight" x="240" y="0" width="140" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{temperature}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="faf16735-e6fc-4d7e-a330-cf645d692956" style="cell_td" stretchType="RelativeToBandHeight" x="380" y="0" width="100" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{dataYear}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="30" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<textField pattern="yyyy/MM/dd HH:mm">
+				<reportElement uuid="fc92bb86-5d56-4005-9dd0-1c8d2fbd7da5" style="foot_time" x="0" y="10" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9e66582c-4589-41be-a872-af7a7d0b236c" style="foot_page" x="200" y="10" width="120" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="dd028235-b702-4901-9da7-d6c892261c19" style="foot_page" x="320" y="10" width="60" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="1013a73d-65b5-44fb-a4b6-c5c490fb4f24" style="foot_user" x="440" y="10" width="60" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{userName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="40" splitType="Stretch"/>
+	</summary>
+</jasperReport>

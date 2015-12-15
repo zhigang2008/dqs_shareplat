@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="UserGroup">
+
+	<resultMap id="RM.UserGroup" type="com.steven.core.model.UserGroup">
+        <result property="id" column="ID"/>
+        <result property="userid" column="USERID"/>
+        <result property="groupId" column="GROUP_ID"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="UserGroup.columns">
+	    <![CDATA[
+		ID,USERID,GROUP_ID
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="UserGroup.insert" >
+    <![CDATA[
+        INSERT INTO T_SYS_USER_GROUP (
+        	ID ,
+        	USERID ,
+        	GROUP_ID 
+        ) VALUES (
+        	#{id,jdbcType=INTEGER} ,
+        	#{userid,jdbcType=INTEGER} ,
+        	#{groupId,jdbcType=INTEGER} 
+        )
+    ]]>
+		<!--oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL -->
+			
+		<selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id">
+			SELECT S_T_SYS_USER_GROUP.nextval  FROM DUAL 
+        </selectKey>
+	</insert>
+    
+	<update id="UserGroup.update" >
+    <![CDATA[
+        UPDATE T_SYS_USER_GROUP SET
+	        USERID = #{userid,jdbcType=INTEGER} ,
+	        GROUP_ID = #{groupId,jdbcType=INTEGER} 
+        WHERE 
+	        ID = #{id} 
+    ]]>
+	</update>
+
+    <delete id="UserGroup.delete">
+    <![CDATA[
+        DELETE FROM T_SYS_USER_GROUP WHERE
+        ID = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="UserGroup.getById" resultMap="RM.UserGroup">
+		SELECT <include refid="UserGroup.columns" />
+	    <![CDATA[
+		    FROM T_SYS_USER_GROUP 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+	</select>
+	<!-- 不建议,仅提供给数据量较少的基表查询 -->
+	 <select id="UserGroup.findAll" resultMap="RM.UserGroup">
+		SELECT <include refid="UserGroup.columns" />
+	    <![CDATA[
+		    FROM T_SYS_USER_GROUP 
+	    ]]>
+	</select>
+	
+	<sql id="UserGroup.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+	       <if test="@Ognl@isNotEmpty(id)">
+				AND ID = #{id}
+			</if>
+	       <if test="@Ognl@isNotEmpty(userid)">
+				AND USERID = #{userid}
+			</if>
+	       <if test="@Ognl@isNotEmpty(groupId)">
+				AND GROUP_ID = #{groupId}
+			</if>
+		</where>
+	</sql>
+		
+    <select id="UserGroup.findPage.count" resultType="long">
+        SELECT count(*) FROM T_SYS_USER_GROUP 
+		<include refid="UserGroup.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="UserGroup.findPage" resultMap="RM.UserGroup">
+    	SELECT <include refid="UserGroup.columns" />
+	    FROM T_SYS_USER_GROUP 
+		<include refid="UserGroup.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+<!-- 根据用户ID删除记录 -->
+ <delete id="UserGroup.removeByUserId">
+    <![CDATA[
+        DELETE FROM T_SYS_USER_GROUP 
+        WHERE 
+         USERID = #{userid} 
+    ]]>
+    </delete>
+    <!-- 根据组ID删除记录 -->
+ <delete id="UserGroup.removeByGroupId">
+    <![CDATA[
+        DELETE FROM T_SYS_USER_GROUP 
+        WHERE 
+        GROUP_ID = #{groupid} 
+    ]]>
+    </delete>
+    
+     <!-- 根据用户ID查询所有记录 -->
+	<select id="UserGroup.getUserGroupByUserId" resultMap="RM.UserGroup">
+    	SELECT <include refid="UserGroup.columns" />
+	    FROM T_SYS_USER_GROUP 
+		WHERE USERID = #{userid} 
+    </select>
+	
+</mapper>
+

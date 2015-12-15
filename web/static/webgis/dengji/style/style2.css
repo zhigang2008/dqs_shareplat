@@ -1,0 +1,63 @@
+BODY {
+	MARGIN: 0px
+}
+.mouse {
+	CURSOR: hand
+}
+TD {
+	FONT-SIZE: 12px; FONT-FAMILY: "宋体"
+}
+.font1 {
+	FONT-SIZE: 12px; COLOR: #ffffff; FONT-FAMILY: "宋体"
+}
+A:link {
+	FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: "宋体"; TEXT-DECORATION: none
+}
+A:hover {
+	FONT-SIZE: 12px; COLOR: #0359aa; FONT-FAMILY: "宋体"; TEXT-DECORATION: none
+}
+A:visited {
+	FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: "宋体"; TEXT-DECORATION: none
+}
+.titleStyle {
+	FONT-SIZE: 12px; COLOR: #000000
+}
+.contentStyle {
+	FONT-SIZE: 12px; COLOR: #333333
+}
+.textform {
+	BORDER-RIGHT: #dddddd 1px solid; BORDER-TOP: #888888 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #888888 1px solid; WIDTH: 90px; COLOR: #000000; BORDER-BOTTOM: #dddddd 1px solid; FONT-FAMILY: "宋体"; HEIGHT: 18px; BACKGROUND-COLOR: #ffffff
+}
+.textform0 {
+	BORDER-RIGHT: #dddddd 1px solid; BORDER-TOP: #888888 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #888888 1px solid; WIDTH: 180px; COLOR: #000000; BORDER-BOTTOM: #dddddd 1px solid; FONT-FAMILY: "宋体"; HEIGHT: 18px; BACKGROUND-COLOR: #ffffff
+}
+.textform1 {
+	BORDER-RIGHT: #dddddd 1px solid; BORDER-TOP: #888888 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #888888 1px solid; WIDTH: 260px; COLOR: #000000; BORDER-BOTTOM: #dddddd 1px solid; FONT-FAMILY: "宋体"; HEIGHT: 18px; BACKGROUND-COLOR: #ffffff
+}
+.textform2 {
+	BORDER-RIGHT: #dddddd 1px solid; BORDER-TOP: #888888 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #888888 1px solid; WIDTH: 150px; COLOR: #000000; BORDER-BOTTOM: #dddddd 1px solid; FONT-FAMILY: "宋体"; HEIGHT: 18px; BACKGROUND-COLOR: #ffffff
+}
+.textarea {
+	BORDER-RIGHT: #dddddd 1px solid; BORDER-TOP: #888888 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #888888 1px solid; WIDTH: 330px; COLOR: #000000; BORDER-BOTTOM: #dddddd 1px solid; FONT-FAMILY: "宋体"; HEIGHT: 240px; BACKGROUND-COLOR: #ffffff
+}
+.textarea2 {
+	BORDER-RIGHT: #dddddd 1px solid; BORDER-TOP: #888888 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #888888 1px solid; COLOR: #000000; BORDER-BOTTOM: #dddddd 1px solid; FONT-FAMILY: "宋体"; BACKGROUND-COLOR: #ffffff
+}
+.SELECT {
+	FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: "宋体"
+}
+.sumbit {
+	BORDER-RIGHT: 1px ridge; BORDER-TOP: #ffffff 1px ridge; FONT-SIZE: 12px; BORDER-LEFT: #ffffff 1px ridge; WIDTH: 40px; COLOR: #000000; BORDER-BOTTOM: 1px ridge; HEIGHT: 16px; BACKGROUND-COLOR: #efefef
+}
+.sumbit2 {
+	BORDER-RIGHT: 1px ridge; BORDER-TOP: #ffffff 1px ridge; FONT-SIZE: 12px; BORDER-LEFT: #ffffff 1px ridge; WIDTH: 65px; COLOR: #000000; BORDER-BOTTOM: 1px ridge; HEIGHT: 16px; BACKGROUND-COLOR: #efefef
+}
+.button {
+	BACKGROUND-IMAGE: url(images/go.gif)
+}
+.tableborder {
+	BORDER-RIGHT: 1px; BORDER-TOP: 1px; BORDER-LEFT: 1px; BORDER-BOTTOM: 1px; BACKGROUND-COLOR: #ffffff
+}
+.titleborder {
+	COLOR: #265980; BORDER-BOTTOM: #8c8a8c 1px solid; BACKGROUND-COLOR: #f6f6f6
+}

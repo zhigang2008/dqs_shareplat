@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="台站" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="dfcafe15-269b-4d3f-90b6-8ca6fdad8bab">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="267"/>
+	<property name="ireport.y" value="1"/>
+	<template><![CDATA[$P{styleLocation}]]></template>
+	<style name="table_td" style="table_td_odd">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="styleLocation" class="java.lang.String"/>
+	<parameter name="reportTitle" class="java.lang.String"/>
+	<parameter name="userName" class="java.lang.String"/>
+	<parameter name="showWatermark" class="java.lang.Boolean"/>
+	<parameter name="watermark" class="java.lang.String"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="regionCode" class="java.lang.String"/>
+	<field name="code" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="longitude" class="java.lang.String"/>
+	<field name="latitude" class="java.lang.String"/>
+	<field name="hight" class="java.lang.Long"/>
+	<field name="unit" class="java.lang.String"/>
+	<field name="wellTypeCode" class="java.lang.Integer"/>
+	<field name="wellDepth" class="java.lang.Long"/>
+	<field name="observateDepth" class="java.lang.Long"/>
+	<field name="lithology" class="java.lang.String"/>
+	<field name="temperature" class="java.lang.Long"/>
+	<field name="observateTime" class="java.lang.String"/>
+	<field name="stationTypeCode" class="java.lang.Integer"/>
+	<field name="zmCode" class="java.lang.String"/>
+	<background>
+		<band height="500" splitType="Stretch">
+			<printWhenExpression><![CDATA[$P{showWatermark}==true&&$P{watermark}!=null]]></printWhenExpression>
+			<image scaleImage="RealSize" hAlign="Center" vAlign="Middle" isUsingCache="true" isLazy="true" onErrorType="Icon" evaluationTime="Report">
+				<reportElement uuid="b8b5cf67-a75d-4b69-a1f4-c902f72f9294" positionType="Float" mode="Opaque" x="0" y="0" width="555" height="500"/>
+				<imageExpression><![CDATA[$P{watermark}]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<title>
+		<band height="66" splitType="Stretch">
+			<frame>
+				<reportElement uuid="18bd7408-8eaa-4202-bb0b-0cbc3179ec38" x="0" y="0" width="800" height="66" backcolor="#0066CC"/>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="ee96f7fe-2bb0-4499-bef8-f0977113d440" style="title" x="0" y="0" width="780" height="66"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$P{reportTitle}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="25" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<frame>
+				<reportElement uuid="fa69978b-7831-472e-8076-79f7254fcc02" style="table_th" x="0" y="0" width="800" height="20"/>
+				<staticText>
+					<reportElement uuid="97ec6990-65c0-4a5f-b16d-172723abbbaa" style="cell_th" stretchType="RelativeToBandHeight" x="0" y="0" width="20" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[序号]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="8bde40bd-e127-4c07-9c31-6d5dfc89aeaa" style="cell_th" stretchType="RelativeToBandHeight" x="20" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[地区]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="81b9d23d-380f-4702-bfc7-91532938777f" style="cell_th" stretchType="RelativeToBandHeight" x="80" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[编号]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="f7b966eb-e52a-4374-9ba4-fddecc717545" style="cell_th" stretchType="RelativeToBandHeight" x="140" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[名称]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="6cf1bd24-0984-42e4-b3f1-b6193f428e91" style="cell_th" stretchType="RelativeToBandHeight" x="200" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[经度]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="e6da8cdb-bd1b-45e6-beef-dda0981364b3" style="cell_th" stretchType="RelativeToBandHeight" x="260" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[纬度]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="63bfd028-3e84-4a6a-8e5d-95c764a755da" style="cell_th" stretchType="RelativeToBandHeight" x="320" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[海拔]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="ab6e65ec-98d4-4a3c-8c56-3a7b43d3b26c" style="cell_th" stretchType="RelativeToBandHeight" x="380" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[位置]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="db5efb01-cbad-40ba-9bbe-c57e401e9541" style="cell_th" stretchType="RelativeToBandHeight" x="440" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[钻孔类型]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="9f99afaa-42db-4cd8-b479-ea6b1738ffe9" style="cell_th" stretchType="RelativeToBandHeight" x="500" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[钻孔深度]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="568e0647-1ed9-467a-83e4-37bbfa809231" style="cell_th" stretchType="RelativeToBandHeight" x="560" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[观测深度]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="5309377f-ea47-465c-9e60-9b5f3f632495" style="cell_th" stretchType="RelativeToBandHeight" x="620" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[岩性]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="bb1e93d0-f1f1-4229-9a58-9caf570d2688" style="cell_th" stretchType="RelativeToBandHeight" x="680" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[温度]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="37e1f4c9-492d-46cd-85e5-db612051525e" style="cell_th" stretchType="RelativeToBandHeight" x="740" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<text><![CDATA[观测时间]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<frame>
+				<reportElement uuid="14b8d758-2e7b-4506-afdc-e93b31bf7917" style="table_td" x="0" y="0" width="800" height="20"/>
+				<textField>
+					<reportElement uuid="aeb4f7bd-c157-4b2b-93bc-7273d05ff5ad" style="cell_td" stretchType="RelativeToBandHeight" x="0" y="0" width="20" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="bc0fc48a-1c1e-4bbe-b8ff-29ad5395b5b8" style="cell_td" stretchType="RelativeToBandHeight" x="20" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{regionCode}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="f8c7d4e2-c4a3-4c19-a960-dc2b85c69286" style="cell_td" stretchType="RelativeToBandHeight" x="80" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="e588cc52-abee-4c6f-8a92-156aa3ae9877" style="cell_td" stretchType="RelativeToBandHeight" x="140" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="2299ef6e-b7de-4d86-947c-81777ee3a2af" style="cell_td" stretchType="RelativeToBandHeight" x="200" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{longitude}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="a2f8249a-b2a0-4c4f-9435-c9b8ea9fe4e4" style="cell_td" stretchType="RelativeToBandHeight" x="260" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{latitude}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="26fbf744-6c93-4764-9ff8-9606b11f8d36" style="cell_td" stretchType="RelativeToBandHeight" x="320" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{hight}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="06238870-2485-474f-8d7b-b305c1de08c4" style="cell_td" stretchType="RelativeToBandHeight" x="380" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{unit}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="abdc481b-d93b-4142-ba84-d3ab37b24c3b" style="cell_td" stretchType="RelativeToBandHeight" x="440" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{wellTypeCode}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="e7449aad-d15e-4a5d-af9f-6df977cb12ba" style="cell_td" stretchType="RelativeToBandHeight" x="500" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{wellDepth}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="bdb6db5b-0d72-4cce-8217-6fb5109f3d12" style="cell_td" stretchType="RelativeToBandHeight" x="560" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{observateDepth}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="c2260c60-3e98-4a84-8dda-75a80513f3e6" style="cell_td" stretchType="RelativeToBandHeight" x="620" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{lithology}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="a54642c3-b98b-40c3-8b13-4865b35f8541" style="cell_td" stretchType="RelativeToBandHeight" x="680" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{temperature}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="795690a1-d967-4fc4-97bd-52d59087005c" style="cell_td" stretchType="RelativeToBandHeight" x="740" y="0" width="60" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{observateTime}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="30" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<textField pattern="yyyy/MM/dd HH:mm">
+				<reportElement uuid="ad538ae2-0b90-493f-926c-e70b97c2a867" style="foot_time" x="0" y="10" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e755bb41-e0c6-41ee-8448-c944c2a99c91" style="foot_page" x="200" y="10" width="120" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="4e36e798-d14b-4644-bb18-fa59e64f87a4" style="foot_page" x="320" y="10" width="60" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="95956462-f38f-40d3-9c65-e50b936fd284" style="foot_user" x="440" y="10" width="60" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{userName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="40" splitType="Stretch"/>
+	</summary>
+</jasperReport>

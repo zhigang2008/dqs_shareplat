@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="UserType">
+
+	<resultMap id="RM.UserType" type="com.steven.core.model.UserType">
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="UserType.columns">
+	    <![CDATA[
+		CODE,NAME
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="UserType.insert" >
+    <![CDATA[
+        INSERT INTO T_SYS_USER_TYPE (
+        	CODE ,
+        	NAME 
+        ) VALUES (
+        	#{code,jdbcType=INTEGER} ,
+        	#{name,jdbcType=VARCHAR} 
+        )
+    ]]>
+		<!--oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL -->
+			
+		<selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="code">
+			SELECT S_T_SYS_USER_TYPE.nextval  FROM DUAL 
+        </selectKey>
+	</insert>
+    
+	<update id="UserType.update" >
+    <![CDATA[
+        UPDATE T_SYS_USER_TYPE SET
+	        NAME = #{name,jdbcType=VARCHAR} 
+        WHERE 
+	        CODE = #{code} 
+    ]]>
+	</update>
+
+    <delete id="UserType.delete">
+    <![CDATA[
+        DELETE FROM T_SYS_USER_TYPE WHERE
+        CODE = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="UserType.getById" resultMap="RM.UserType">
+		SELECT <include refid="UserType.columns" />
+	    <![CDATA[
+		    FROM T_SYS_USER_TYPE 
+	        WHERE 
+		        CODE = #{id} 
+	    ]]>
+	</select>
+	<!-- 不建议,仅提供给数据量较少的基表查询 -->
+	 <select id="UserType.findAll" resultMap="RM.UserType">
+		SELECT <include refid="UserType.columns" />
+	    <![CDATA[
+		    FROM T_SYS_USER_TYPE 
+	    ]]>
+	</select>
+		<!-- 基础代码 -->
+	<select id="UserType.baseCode" resultMap="RM.UserType">
+		SELECT <include refid="UserType.columns" />
+	    <![CDATA[
+		    FROM T_SYS_USER_TYPE 
+	    ]]>
+	</select>
+	<sql id="UserType.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+	       <if test="@Ognl@isNotEmpty(code)">
+				AND CODE = #{code}
+			</if>
+	       <if test="@Ognl@isNotEmpty(name)">
+				AND NAME = #{name}
+			</if>
+		</where>
+	</sql>
+		
+    <select id="UserType.findPage.count" resultType="long">
+        SELECT count(*) FROM T_SYS_USER_TYPE 
+		<include refid="UserType.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="UserType.findPage" resultMap="RM.UserType">
+    	SELECT <include refid="UserType.columns" />
+	    FROM T_SYS_USER_TYPE 
+		<include refid="UserType.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	
+</mapper>
+

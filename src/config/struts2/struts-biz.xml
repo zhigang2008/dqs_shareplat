@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <!-- 远程校验 -->
+	<package name="remoteCheck" namespace="/remoteCheck" extends="custom-default">
+	  <global-results>
+			<result name="checkResult" type="stream">
+				<param name="contentType">text/plain</param>
+				<param name="inputName">inputStream</param>
+				<param name="allowCaching">false</param>
+			</result>
+		</global-results>
+        <!-- 用户校验 -->
+		<action name="User/checkExistUser" method="checkExistUser" class="com.steven.core.action.UserAction">
+		</action>
+		<!-- 导入数据校验 -->
+		<action name="BoreholeStrain/checkExistData" method="checkExistData" class="com.dqs.biz.action.BoreholeStrainUploadAction">
+		</action>
+		<action name="BoreholeStation/checkExistStation" method="checkExistStation" class="com.dqs.biz.action.BoreholeStationAction">
+		</action>
+	</package>
+		 
+  	<!-- 具体业务部分-->
+
+    <package name="biz" namespace="/biz" extends="custom-default">
+       <global-results>
+        <!-- json result -->
+		     <result name="jsonPageList" type="json">
+		      <param name="ignoreHierarchy">false</param>
+		      <param name="root">jsonResult</param>
+		    </result>
+		    <result name="jsonList" type="json">
+		      <param name="ignoreHierarchy">false</param>
+		      <param name="root">jsonResult.result</param>
+		    </result>
+		    <result name="treeList" type="json">
+		      <param name="ignoreHierarchy">false</param>
+		      <param name="root">jsonResult.result</param>
+		    </result>
+		    <result name="jsonResult" type="json">
+		      <param name="ignoreHierarchy">false</param>
+		      <param name="root">jsonResult</param>
+		    </result>
+		     <result name="report" type="jasper">
+		       <!-- 使用baseDir和template组合定位模板位置,也可以指定baseDir -->
+		       <param name="location">${report.baseDir}/${report.template}</param>
+		       <!-- 也可以直接使用location定位模板位置
+		       <param name="location">${report.location}</param>
+		        -->
+		       <param name="contentType">application/octet-stream;charset=utf-8</param>
+               <param name="contentDisposition">${report.contentDisposition}</param>
+               <param name="documentName">${report.reportName}</param>
+               <param name="dataSource">report.result</param>
+               <param name="reportParameters">report.params</param>
+               <param name="format">${report.format}</param>
+		    </result>
+       </global-results>
+
+       <!-- 导入数据功能 -->
+        <action name="BoreholeStrainUpload/preview" method="preview" class="BoreholeStrainUploadAction">
+             <result>/biz/BoreholeStrainUpload/preview.jsp</result>
+        </action>
+        <action name="BoreholeStrainUpload/importData" method="importData" class="BoreholeStrainUploadAction">
+             <result >/biz/BoreholeStrainUpload/result.jsp</result>
+        </action>
+        <action name="BoreholeStrainUpload/upload" method="upload" class="BoreholeStrainUploadAction">
+             <result>/biz/BoreholeStrainUpload/upload.jsp</result>
+        </action>
+        <action name="BoreholeStrainUpload/upload2" method="upload2" class="BoreholeStrainUploadAction">
+             <result>/biz/BoreholeStrainUpload/upload2.jsp</result>
+        </action>
+        <!-- 新版格式,分别导入,效率低 -->
+        <action name="BoreholeStrainUpload/importData2" method="importData2" class="BoreholeStrainUploadAction">
+             <result >/biz/BoreholeStrainUpload/result2.jsp</result>
+        </action>
+        <!-- 新版格式,批量导入,效率高 -->
+        <action name="BoreholeStrainUpload/importDataBatch" method="importDataBatch" class="BoreholeStrainUploadAction">
+             <result >/biz/BoreholeStrainUpload/result2.jsp</result>
+        </action>
+        
+        <!-- 地温数据导入 -->
+        <action name="TemperatureUpload/upload" method="upload" class="TemperatureUploadAction">
+             <result>/biz/TemperatureUpload/upload.jsp</result>
+        </action>
+        <action name="TemperatureUpload/importData" method="importData" class="TemperatureUploadAction">
+             <result >/biz/TemperatureUpload/result.jsp</result>
+        </action>
+        <!-- 批量导入 -->
+        <action name="TemperatureUpload/importDataBatch" method="importDataBatch" class="TemperatureUploadAction">
+             <result >/biz/TemperatureUpload/result.jsp</result>
+        </action>
+        <!-- webgis 分类数据下载 -->
+        <!-- 文件下载 -->
+		<action name="EarthStress/downloadfile"  class="com.dqs.biz.action.EarthStressAction">
+		    <result name="success" type="stream">
+				<param name="contentType">application/octet-stream;charset=iso8859-1</param>
+				<param name="contentDisposition">attachment;filename="${downLoadFileName}"</param>
+				<param name="inputName">inputStream</param>
+				<param name="allowCaching">false</param>
+				<param name="bufferSize">4096</param>
+			</result>
+			<result name="fileNotExist">/commons/fileNotExist.jsp</result>
+		</action>
+		<!-- 遥感maps特殊定制 -->
+		<action name="RsMaps/*" method="{1}" class="com.dqs.biz.action.RsMapsAction">
+		    <result name="list" >/biz/RsMaps/list.jsp</result>
+		    <result name="create" >/biz/RsMaps/create.jsp</result>
+		    <result name="edit" >/biz/RsMaps/edit.jsp</result>
+		    <result name="show" >/biz/RsMaps/show.jsp</result>
+		    <result name="list_action" type="redirect">/biz/RsMaps/list.do?libId=${model.libId}</result>
+		   
+		</action>			
+        <!-- 其它业务流程 -->
+		<action name="*/*" method="{2}" class="com.dqs.biz.action.{1}Action">
+		    <result name="list" >/biz/{1}/list.jsp</result>
+		    <result name="create" >/biz/{1}/create.jsp</result>
+		    <result name="edit" >/biz/{1}/edit.jsp</result>
+		    <result name="show" >/biz/{1}/show.jsp</result>
+		    <result name="list_action" type="redirect">/biz/{1}/list.do</result>
+		   
+		</action>			
+    </package>
+ <!-- 前端展示 -->
+     <package name="front" namespace="/front" extends="custom-default">
+     <!-- 报表信息 -->
+  		<action name="getReport" class="com.dqs.report.action.ReportAction">
+		    <result name="jsonList" type="json">
+		      <param name="ignoreHierarchy">false</param>
+		      <param name="root">jsonResult.result</param>
+		    </result>
+		</action>
+		<!-- 发布信息浏览 -->
+		<action name="getNews" method="jsonPageList" class="com.steven.cms.action.CmsContentAction">
+		    <result name="jsonPageList" type="json">
+		      <param name="ignoreHierarchy">false</param>
+		      <param name="root">jsonResult</param>
+		    </result>
+		</action>
+    </package>
+</struts>

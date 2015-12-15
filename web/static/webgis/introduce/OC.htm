@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>数据库简介</title>
+<style type="text/css">
+<!--
+.style1 {font-size: 12px}
+.style2 {color: #000000}
+.style3 {color: #000000; font-size: 12px; }
+-->
+</style>
+</head>
+
+<body>
+<p class="style1">&nbsp;&nbsp;&nbsp;&nbsp;应力解除数据资料主要来自于测试报告和公开发表刊物。按测试类型分类，录入数据分为三维应力测量和平面应力<br>
+  测量。按测量所用的应力计或应变片技术分类，还可分为压磁法、空心包体法、孔壁和孔底应变计法等。</p>
+<table width="627" border="1" bordercolor="#000000">
+  <tr>
+    <td width="550"><p class="style1"><strong>数据表名称：应力解除</strong></p></td>
+    <td width="65"><div align="center"><a href="../data/OC.doc" class="style1">下载</a></div></td>
+  </tr>
+  <tr>
+    <td colspan="2" class="style1"><p><strong>数据表字段说明：</strong></p>
+      <table cellspacing="0" cellpadding="0">
+        <tr valign="middle">
+          <td width="64" height="25"><p align="center"><strong>字段序号</strong></p>
+          </td>
+          <td width="89" height="25"><p align="center"><strong>字段名称</strong></p></td>
+          <td width="162" height="25"><p align="center"><strong>字段定义</strong></p></td>
+          <td width="85" height="25"><p align="center"><strong>字段取值类型</strong></p>
+          </td>
+          <td width="44" height="25"><p align="center"><strong>字段长</strong></p></td>
+          <td width="111" height="25"><p align="center"><strong>值域说明</strong></p></td>
+          <td width="60" height="25"><p align="center"><strong>计量单位</strong></p>
+          </td>
+        </tr>
+        <tr valign="middle">
+          <td width="64" height="25"><p align="center">1</p></td>
+          <td width="89" height="25"><p align="center">记录号</p></td>
+          <td width="162" height="25"><p align="center">资料在数据库中记录编号</p></td>
+          <td width="85" height="25"><p align="center">数字型</p></td>
+          <td width="44" height="25"><p align="center">I4</p></td>
+          <td width="111" height="25"><p align="center">自由文本</p></td>
+          <td width="60" height="25"><p align="center">&nbsp;</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="64" height="25"><p align="center">2</p></td>
+          <td width="89" height="25"><p align="center">纬度</p></td>
+          <td width="162" height="25"><p align="center">测量地点的纬度</p></td>
+          <td width="85" height="25"><p align="center">数字型</p></td>
+          <td width="44" height="25"><p align="center">&nbsp;</p></td>
+          <td width="111" height="25"><p align="center">自由文本</p></td>
+          <td width="60" height="25"><p align="center">o</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="64" height="25"><p align="center">3</p></td>
+          <td width="89" height="25"><p align="center">经度</p></td>
+          <td width="162" height="25"><p align="center">测量地点的经度</p></td>
+          <td width="85" height="25"><p align="center">数字型</p></td>
+          <td width="44" height="25"><p align="center">&nbsp;</p></td>
+          <td width="111" height="25"><p align="center">自由文本</p></td>
+          <td width="60" height="25"><p align="center">o</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="64" height="25"><p align="center">4</p></td>
+          <td width="89" height="25"><p align="center">方位</p></td>
+          <td width="162" height="25"><p align="center">最大水平主应力方位（SH）</p></td>
+          <td width="85" height="25"><p align="center">数字型</p></td>
+          <td width="44" height="25"><p align="center">&nbsp;</p></td>
+          <td width="111" height="25"><p align="center">0～360</p></td>
+          <td width="60" height="25"><p align="center">o</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="64" height="25"><p align="center">5</p></td>
+          <td width="89" height="25"><p align="center">地点</p></td>
+          <td width="162" height="25"><p align="center">测量地点（省、市、县）</p></td>
+          <td width="85" height="25"><p align="center">字符型</p></td>
+          <td width="44" height="25"><p align="center">A20</p></td>
+          <td width="111" height="25"><p align="center">自由文本</p></td>
+          <td width="60" height="25"><p align="center">&nbsp;</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="64" height="43"><p align="center">6</p></td>
+          <td width="89" height="43"><p align="center">应力状态</p></td>
+          <td width="162" height="43"><p align="center">数据指示的应力状态<br>
+（应力状态详解） </p></td>
+          <td width="85" height="43"><p align="center">字符型</p></td>
+          <td width="44" height="43"><p align="center">A2</p></td>
+          <td width="111" height="43"><p align="center">TF，TS，SS，<br>
+          NS，NF，UD</p></td>
+          <td width="60" height="43"><p align="center">&nbsp;</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="64" height="43"><p align="center">7</p></td>
+          <td width="89" height="43"><p align="center">应力分区</p></td>
+          <td width="162" height="43"><p align="center">数据点所在的应力分区代码<br>
+          （应力分区详解）          </p></td>
+          <td width="85" height="43"><p align="center">字符型</p></td>
+          <td width="44" height="43"><p align="center">A4</p></td>
+          <td width="111" height="43"><p align="center">应力分区代码</p></td>
+          <td width="60" height="43"><p align="center">&nbsp;</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="64" height="25"><p align="center">8</p></td>
+          <td width="89" height="25"><p align="center">深度</p></td>
+          <td width="162" height="25"><p align="center">测量的最大深度</p></td>
+          <td width="85" height="25"><p align="center">数字型</p></td>
+          <td width="44" height="25"><p align="center">I4</p></td>
+          <td width="111" height="25"><p align="center">自由文本</p></td>
+          <td width="60" height="25"><p align="center">m</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="64" height="36"><p align="center">9</p></td>
+          <td width="89" height="36"><p align="center">类型</p></td>
+          <td width="162" height="36"><p align="center">应力解除数据类型</p></td>
+          <td width="85" height="36"><p align="center">字符型</p></td>
+          <td width="44" height="36"><p align="center">A3</p></td>
+          <td width="111" height="36"><p align="center">OCP：平面应力测量OCT：三维应力测量</p>
+          </td>
+          <td width="60" height="36"><p align="center">&nbsp;</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="64" height="34"><p align="center">10</p></td>
+          <td width="89" height="34"><p align="center">方法*</p></td>
+          <td width="162" height="34"><p align="center">应力解除测量技术方法</p></td>
+          <td width="85" height="34"><p align="center">字符型</p></td>
+          <td width="44" height="34"><p align="center">&nbsp;</p></td>
+          <td width="111" height="34"><p align="center">自由文本</p></td>
+          <td width="60" height="34"><p align="center">&nbsp;</p></td>
+        </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td height="70" colspan="2"><table width="621" border="1" cellpadding="0">
+      <tr bordercolor="#FFFFFF">
+        <td width="65" height="30" valign="top"><span class="style3">*备注</span></td>
+        <td width="501" rowspan="2"><span class="style3">方法说明（应力解除测量技术方法）：<br>
+        ① 二维压磁 ② 三维压磁 ③ 二维孔壁应变计 ④ 三维孔壁应变计<br>
+        ⑤ 二维孔底应变法⑥ 三维孔底应变法 ⑦ 三维空心包体 ⑧ 孔径变形法<br>
+        ⑨ 钻孔三向应变计⑩ 压磁全应力计</span></td>
+        <td width="39"><span class="style2"></span></td>
+      </tr>
+      <tr bordercolor="#FFFFFF">
+        <td height="28"><span class="style2"></span></td>
+        <td><span class="style2"></span></td>
+      </tr>
+    </table>      
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

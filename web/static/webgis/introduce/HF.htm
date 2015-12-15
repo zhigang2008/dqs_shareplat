@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>数据库简介</title>
+<style type="text/css">
+<!--
+.style1 {font-size: 12px}
+-->
+</style>
+</head>
+
+<body>
+<p class="style1">&nbsp;&nbsp;&nbsp;目前数据库中，常规平面应力测量数据约占总数的86%；多个交汇钻孔三维地应力测量数据约占总数的8%；只给出<br>
+  应力梯度信息的数据约占总数的6%。从数据的地域分布范围来看，水压致裂应力测量数据覆盖了除内蒙、吉林、江西<br>
+  三省外的中国大陆境内的所有其它省区（包括香港地区）。数据来源以中国地震局地壳应力研究所的科研和工程应力<br>
+  测量资料为主，此外还有少量来自其他部门已发表在公开刊物上的测试资料。</p>
+<table width="622" border="1" bordercolor="#000000">
+  <tr>
+    <td width="547"><p class="style1"><strong>数据表名称：水压致裂数据</strong></p></td>
+    <td width="60"><div align="center"><a href="../data/HF.doc" class="style1">下载</a></div></td>
+  </tr>
+  <tr>
+    <td colspan="2" class="style1"><p><strong>数据表字段说明:</strong></p>
+      <table cellspacing="0" cellpadding="0">
+        <tr valign="middle">
+          <td width="61" height="25"><p align="center"><strong>字段</strong><strong>序号</strong></p>
+          </td>
+          <td width="91" height="25"><p align="center"><strong>字段名称</strong></p></td>
+          <td width="177" height="25"><p align="center"><strong>字段定义</strong></p></td>
+          <td width="89" height="25"><p align="center"><strong>字段取</strong><strong>值类型</strong></p>
+          </td>
+          <td width="42" height="25"><p align="center"><strong>字段长</strong></p></td>
+          <td width="93" height="25"><p align="center"><strong>值域说明</strong></p></td>
+          <td width="57" height="25"><p align="center"><strong>计量</strong><strong>单位</strong></p>
+          </td>
+        </tr>
+        <tr valign="middle">
+          <td width="61" height="25"><p align="center">1</p></td>
+          <td width="91" height="25"><p align="center">记录号</p></td>
+          <td width="177" height="25"><p align="center">资料在数据库中记录编号</p></td>
+          <td width="89" height="25"><p align="center">数字型</p></td>
+          <td width="42" height="25"><p align="center">I4</p></td>
+          <td width="93" height="25"><p align="center">自由文本</p></td>
+          <td width="57" height="25"><p align="center">&nbsp;</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="61" height="25"><p align="center">2</p></td>
+          <td width="91" height="25"><p align="center">纬度</p></td>
+          <td width="177" height="25"><p align="center">测量地点的纬度</p></td>
+          <td width="89" height="25"><p align="center">数字型</p></td>
+          <td width="42" height="25"><p align="center">&nbsp;</p></td>
+          <td width="93" height="25"><p align="center">自由文本</p></td>
+          <td width="57" height="25"><p align="center">o</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="61" height="25"><p align="center">3</p></td>
+          <td width="91" height="25"><p align="center">经度</p></td>
+          <td width="177" height="25"><p align="center">测量地点的经度</p></td>
+          <td width="89" height="25"><p align="center">数字型</p></td>
+          <td width="42" height="25"><p align="center">&nbsp;</p></td>
+          <td width="93" height="25"><p align="center">自由文本</p></td>
+          <td width="57" height="25"><p align="center">o</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="61" height="25"><p align="center">4</p></td>
+          <td width="91" height="25"><p align="center">方位</p></td>
+          <td width="177" height="25"><p align="center">最大水平主应力方位（SH）</p></td>
+          <td width="89" height="25"><p align="center">数字型</p></td>
+          <td width="42" height="25"><p align="center">&nbsp;</p></td>
+          <td width="93" height="25"><p align="center">0～360</p></td>
+          <td width="57" height="25"><p align="center">o</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="61" height="25"><p align="center">5</p></td>
+          <td width="91" height="25"><p align="center">数据质量</p></td>
+          <td width="177" height="25"><p align="center">数据质量</p></td>
+          <td width="89" height="25"><p align="center">字符型</p></td>
+          <td width="42" height="25"><p align="center">A1</p></td>
+          <td width="93" height="25"><p align="center">A，B，C，D，E</p></td>
+          <td width="57" height="25"><p align="center">&nbsp;</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="61" height="25"><p align="center">6</p></td>
+          <td width="91" height="25"><p align="center">地点</p></td>
+          <td width="177" height="25"><p align="center">测量地点（省、市、县）</p></td>
+          <td width="89" height="25"><p align="center">字符型</p></td>
+          <td width="42" height="25"><p align="center">A20</p></td>
+          <td width="93" height="25"><p align="center">自由文本</p></td>
+          <td width="57" height="25"><p align="center">&nbsp;</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="61" height="42"><p align="center">7</p></td>
+          <td width="91" height="42"><p align="center">应力状态</p></td>
+          <td width="177" height="42"><p align="center">数据指示的应力状态<br>
+            （应力状态详解）
+          </p></td>
+          <td width="89" height="42"><p align="center">字符型</p></td>
+          <td width="42" height="42"><p align="center">A2</p></td>
+          <td width="93" height="42"><p align="center">TF，TS，SS，NS，NF，UD</p></td>
+          <td width="57" height="42"><p align="center">&nbsp;</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="61" height="41"><p align="center">8</p></td>
+          <td width="91" height="41"><p align="center">应力分区</p></td>
+          <td width="177" height="41"><p align="center">数据点所在的应力分区代码<br>
+            （应力分区详解）
+          </p></td>
+          <td width="89" height="41"><p align="center">字符型</p></td>
+          <td width="42" height="41"><p align="center">A4</p></td>
+          <td width="93" height="41"><p align="center">应力分区代码</p></td>
+          <td width="57" height="41"><p align="center">&nbsp;</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="61" height="25"><p align="center">9</p></td>
+          <td width="91" height="25"><p align="center">深度</p></td>
+          <td width="177" height="25"><p align="center">钻孔是测量最大深度</p></td>
+          <td width="89" height="25"><p align="center">数字型</p></td>
+          <td width="42" height="25"><p align="center">I4</p></td>
+          <td width="93" height="25"><p align="center">自由文本</p></td>
+          <td width="57" height="25"><p align="center">m</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="61" height="25"><p align="center">10</p></td>
+          <td width="91" height="25"><p align="center">类型*</p></td>
+          <td width="177" height="25"><p align="center">水压致裂数据类型</p></td>
+          <td width="89" height="25"><p align="center">字符型</p></td>
+          <td width="42" height="25"><p align="center">A3</p></td>
+          <td width="93" height="25"><p align="center">HF,HFG,HFM,HFP</p>
+          </td>
+          <td width="57" height="25"><p align="center">&nbsp;</p></td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td height="77" colspan="2"><table width="613" border="1" cellpadding="0">
+        <tr bordercolor="#FFFFFF">
+          <td width="66" height="67" valign="top"><span class="style1">*备注</span></td>
+          <td width="535"><span class="style1">类型说明：<br>
+            HF: 水压致裂测量<br>
+            </span><SPAN class="style1" 
+lang=EN-US>HFG:水压致裂测量，量值以剃度分布给出<br>
+            HFM:多孔交汇法水压致裂三维应力测量，给出全应力的大小和方向<br>
+          HFP:在先存裂缝上进行水压致裂测量(HTPF技术)，量值由测量深度段的测试结果反演给出</SPAN></td>
+        </tr>
+    </table></td>
+  </tr>
+</table>
+
+</body>
+</html>

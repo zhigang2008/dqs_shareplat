@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="Report">
+	 <select id="Report.getStationTypeCount" parameterType="hashMap" resultType="hashmap">
+		<![CDATA[
+		SELECT ET.NAME NAME,
+               (select count(*) from T_STATION  E  WHERE   E.STATION_TYPE_CODE = ET.CODE ) AMOUNT
+	    FROM 
+	       T_STATION_TYPE ET
+	    ]]>
+	</select>
+</mapper>
+

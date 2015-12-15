@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="UserRole">
+
+	<resultMap id="RM.UserRole" type="com.steven.core.model.UserRole">
+        <result property="id" column="ID"/>
+        <result property="userid" column="USERID"/>
+        <result property="roleId" column="ROLE_ID"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="UserRole.columns">
+	    <![CDATA[
+		ID,USERID,ROLE_ID
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="UserRole.insert" >
+    <![CDATA[
+        INSERT INTO T_SYS_USER_ROLE (
+        	ID ,
+        	USERID ,
+        	ROLE_ID 
+        ) VALUES (
+        	#{id,jdbcType=INTEGER} ,
+        	#{userid,jdbcType=INTEGER} ,
+        	#{roleId,jdbcType=INTEGER} 
+        )
+    ]]>
+		<!--oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL -->
+			
+		<selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id">
+			SELECT S_T_SYS_USER_ROLE.nextval  FROM DUAL 
+        </selectKey>
+	</insert>
+    
+	<update id="UserRole.update" >
+    <![CDATA[
+        UPDATE T_SYS_USER_ROLE SET
+	        USERID = #{userid,jdbcType=INTEGER} ,
+	        ROLE_ID = #{roleId,jdbcType=INTEGER} 
+        WHERE 
+	        ID = #{id} 
+    ]]>
+	</update>
+
+    <delete id="UserRole.delete">
+    <![CDATA[
+        DELETE FROM T_SYS_USER_ROLE WHERE
+        ID = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="UserRole.getById" resultMap="RM.UserRole">
+		SELECT <include refid="UserRole.columns" />
+	    <![CDATA[
+		    FROM T_SYS_USER_ROLE 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+	</select>
+	<!-- 不建议,仅提供给数据量较少的基表查询 -->
+	 <select id="UserRole.findAll" resultMap="RM.UserRole">
+		SELECT <include refid="UserRole.columns" />
+	    <![CDATA[
+		    FROM T_SYS_USER_ROLE 
+	    ]]>
+	</select>
+	
+	<sql id="UserRole.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+	       <if test="@Ognl@isNotEmpty(id)">
+				AND ID = #{id}
+			</if>
+	       <if test="@Ognl@isNotEmpty(userid)">
+				AND USERID = #{userid}
+			</if>
+	       <if test="@Ognl@isNotEmpty(roleId)">
+				AND ROLE_ID = #{roleId}
+			</if>
+		</where>
+	</sql>
+		
+    <select id="UserRole.findPage.count" resultType="long">
+        SELECT count(*) FROM T_SYS_USER_ROLE 
+		<include refid="UserRole.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="UserRole.findPage" resultMap="RM.UserRole">
+    	SELECT <include refid="UserRole.columns" />
+	    FROM T_SYS_USER_ROLE 
+		<include refid="UserRole.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+   <!-- 根据用户ID删除记录 -->
+   <delete id="UserRole.removeByUserId">
+    <![CDATA[
+        DELETE FROM T_SYS_USER_ROLE 
+        WHERE   USERID = #{userid} 
+    ]]>
+    </delete>
+	<!-- 根据角色ID删除记录 -->
+   <delete id="UserRole.removeByRoleId">
+    <![CDATA[
+        DELETE FROM T_SYS_USER_ROLE 
+        WHERE   ROLE_ID = #{roleid} 
+    ]]>
+    </delete>
+    <!-- 根据用户ID查询所有记录 -->
+    <select id="UserRole.getUserRoleByUserId" resultMap="RM.UserRole">
+    	SELECT <include refid="UserRole.columns" />
+	    FROM T_SYS_USER_ROLE 
+		WHERE USERID=#{userid} 
+    </select>
+	
+</mapper>
+

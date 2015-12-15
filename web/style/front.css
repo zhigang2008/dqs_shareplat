@@ -1,0 +1,23 @@
+.rightBox {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-left: 8px solid #E2E2E2;
+    margin-left: 160px;
+}
+.leftBox {
+    background: none repeat scroll 0 0 #F3F3F3;
+    float: left;
+    width: 160px;
+}
+.sideBarToggle {
+    cursor: pointer;
+    display: inline;
+    float: left;
+    font-size: 0;
+    margin-left: -8px;
+    padding: 300px 0;
+    text-align: center;
+    width: 8px;
+}
+.sideBarToggle img {
+    cursor: pointer;
+}

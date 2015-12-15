@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="CmsBoard">
+
+	<resultMap id="RM.CmsBoard" type="com.steven.cms.model.CmsBoard">
+        <result property="id" column="ID"/>
+        <result property="userName" column="USER_NAME"/>
+        <result property="title" column="TITLE"/>
+        <result property="content" column="CONTENT"/>
+        <result property="time" column="TIME"/>
+        <result property="phone" column="PHONE"/>
+        <result property="mail" column="MAIL"/>
+        <result property="reply" column="REPLY"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="msgType" column="MSG_TYPE"/>
+        <result property="status" column="STATUS"/>
+        <association property="boardType" column="MSG_TYPE" select="CmsBoardType.getById"/>
+        <association property="boardStatus" column="STATUS" select="CmsBoardStatus.getById"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CmsBoard.columns">
+	    <![CDATA[
+		ID,USER_NAME,TITLE,CONTENT,TIME,PHONE,MAIL,REPLY,USER_ID,MSG_TYPE,STATUS
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="CmsBoard.insert" >
+    <![CDATA[
+        INSERT INTO T_CMS_BOARD (
+        	ID ,
+        	USER_NAME ,
+        	TITLE ,
+        	CONTENT ,
+        	TIME ,
+        	PHONE ,
+        	MAIL ,
+        	REPLY ,
+        	USER_ID ,
+        	MSG_TYPE ,
+        	STATUS 
+        ) VALUES (
+        	#{id,jdbcType=DECIMAL} ,
+        	#{userName,jdbcType=VARCHAR} ,
+        	#{title,jdbcType=VARCHAR} ,
+        	#{content,jdbcType=VARCHAR} ,
+        	#{time,jdbcType=TIMESTAMP} ,
+        	#{phone,jdbcType=VARCHAR} ,
+        	#{mail,jdbcType=VARCHAR} ,
+        	#{reply,jdbcType=VARCHAR} ,
+        	#{userId,jdbcType=DECIMAL} ,
+        	#{msgType,jdbcType=DECIMAL} ,
+        	#{status,jdbcType=DECIMAL} 
+        )
+    ]]>
+		<!--oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL -->
+			
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+			SELECT S_T_CMS_BOARD.nextval  FROM DUAL 
+        </selectKey>
+	</insert>
+    
+	<update id="CmsBoard.update" >
+    <![CDATA[
+        UPDATE T_CMS_BOARD SET
+	        USER_NAME = #{userName,jdbcType=VARCHAR} ,
+	        TITLE = #{title,jdbcType=VARCHAR} ,
+	        CONTENT = #{content,jdbcType=VARCHAR} ,
+	        TIME = #{time,jdbcType=TIMESTAMP} ,
+	        PHONE = #{phone,jdbcType=VARCHAR} ,
+	        MAIL = #{mail,jdbcType=VARCHAR} ,
+	        REPLY = #{reply,jdbcType=VARCHAR} ,
+	        USER_ID = #{userId,jdbcType=DECIMAL} ,
+	        MSG_TYPE = #{msgType,jdbcType=DECIMAL} ,
+	        STATUS = #{status,jdbcType=DECIMAL} 
+        WHERE 
+	        ID = #{id} 
+    ]]>
+	</update>
+
+    <delete id="CmsBoard.delete">
+    <![CDATA[
+        DELETE FROM T_CMS_BOARD WHERE
+        ID = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="CmsBoard.getById" resultMap="RM.CmsBoard">
+		SELECT <include refid="CmsBoard.columns" />
+	    <![CDATA[
+		    FROM T_CMS_BOARD 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+	</select>
+	<!-- 不建议,仅提供给数据量较少的基表查询 -->
+	 <select id="CmsBoard.findAll" resultMap="RM.CmsBoard">
+		SELECT <include refid="CmsBoard.columns" />
+	    <![CDATA[
+		    FROM T_CMS_BOARD 
+	    ]]>
+	</select>
+	<!-- 基础代码,视情况添加状态识别 -->
+	 <select id="CmsBoard.baseCode" resultMap="RM.CmsBoard">
+		SELECT <include refid="CmsBoard.columns" />
+	    <![CDATA[
+		    FROM T_CMS_BOARD 
+	    ]]>
+	    <!-- 视情况添加where条件 -->
+	</select>
+	
+	<sql id="CmsBoard.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+	       <if test="@Ognl@isNotEmpty(id)">
+				AND ID = #{id}
+			</if>
+	       <if test="@Ognl@isNotEmpty(userName)">
+				AND USER_NAME like '%'||#{userName}||'%'
+			</if>
+	       <if test="@Ognl@isNotEmpty(title)">
+				AND TITLE like '%'||#{title}||'%'
+			</if>
+	       <if test="@Ognl@isNotEmpty(content)">
+				AND CONTENT like '%'||#{content}||'%'
+			</if>
+	       <if test="@Ognl@isNotEmpty(timeBegin)">
+				AND TIME >= #{timeBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(timeEnd)">
+				AND TIME &lt;= #{timeEnd}
+		   </if>
+	       <if test="@Ognl@isNotEmpty(phone)">
+				AND PHONE = #{phone}
+			</if>
+	       <if test="@Ognl@isNotEmpty(mail)">
+				AND MAIL = #{mail}
+			</if>
+	       <if test="@Ognl@isNotEmpty(reply)">
+				AND REPLY like '%'||#{reply}||'%'
+			</if>
+	       <if test="@Ognl@isNotEmpty(userId)">
+				AND USER_ID = #{userId}
+			</if>
+	       <if test="@Ognl@isNotEmpty(msgType)">
+				AND MSG_TYPE = #{msgType}
+			</if>
+	       <if test="@Ognl@isNotEmpty(status)">
+				AND STATUS = #{status}
+			</if>
+		</where>
+	</sql>
+		
+    <select id="CmsBoard.findPage.count" resultType="long">
+        SELECT count(*) FROM T_CMS_BOARD 
+		<include refid="CmsBoard.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="CmsBoard.findPage" resultMap="RM.CmsBoard">
+    	SELECT <include refid="CmsBoard.columns" />
+	    FROM T_CMS_BOARD 
+		<include refid="CmsBoard.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+<!-- 前端可供显示的留言 -->	
+	<sql id="CmsBoard.frontPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	  
+		      STATUS >=2     				
+	       <if test="@Ognl@isNotEmpty(id)">
+				AND ID = #{id}
+			</if>
+	       <if test="@Ognl@isNotEmpty(userName)">
+				AND USER_NAME like '%'||#{userName}||'%'
+			</if>
+	       <if test="@Ognl@isNotEmpty(title)">
+				AND TITLE like '%'||#{title}||'%'
+			</if>
+	       <if test="@Ognl@isNotEmpty(content)">
+				AND CONTENT like '%'||#{content}||'%'
+			</if>
+	       <if test="@Ognl@isNotEmpty(timeBegin)">
+				AND TIME >= #{timeBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(timeEnd)">
+				AND TIME &lt;= #{timeEnd}
+		   </if>
+	       <if test="@Ognl@isNotEmpty(phone)">
+				AND PHONE = #{phone}
+			</if>
+	       <if test="@Ognl@isNotEmpty(mail)">
+				AND MAIL = #{mail}
+			</if>
+	       <if test="@Ognl@isNotEmpty(reply)">
+				AND REPLY like '%'||#{reply}||'%'
+			</if>
+	       <if test="@Ognl@isNotEmpty(userId)">
+				AND USER_ID = #{userId}
+			</if>
+	       <if test="@Ognl@isNotEmpty(msgType)">
+				AND MSG_TYPE = #{msgType}
+			</if>
+		</where>
+	</sql>
+		
+    <select id="CmsBoard.frontPage.count" resultType="long">
+        SELECT count(*) FROM T_CMS_BOARD  
+		<include refid="CmsBoard.frontPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="CmsBoard.frontPage" resultMap="RM.CmsBoard">
+    	SELECT <include refid="CmsBoard.columns" />
+	    FROM T_CMS_BOARD 
+		<include refid="CmsBoard.frontPage.where"/>
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+</mapper>
+

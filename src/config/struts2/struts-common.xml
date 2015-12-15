@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+<!-- custom-default no auth -->
+ <package name="custom-default" extends="struts-default">
+        <result-types>
+            <result-type name="json" class="org.apache.struts2.json.JSONResult"/>
+            <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+        </result-types>
+        <interceptors>
+        	<interceptor name="json" class="org.apache.struts2.json.JSONInterceptor"/>
+        	<!-- 提供视图渲染的共享变量拦截器 -->
+        	<interceptor name="sharedRenderVariableInterceptor" class="com.steven.framework.core.struts2.interceptor.SharedRenderVariableInterceptor"/>
+            <interceptor-stack name="customDefaultStack">
+                <interceptor-ref name="paramsPrepareParamsStack"/>
+                <interceptor-ref name="sharedRenderVariableInterceptor"/>
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="customDefaultStack"/>
+      
+      <!-- 通过web.xml的error-page定义
+      <global-results>  
+        <result name="errorPage">/commons/error.jsp</result>  
+      </global-results>
+      <global-exception-mappings>
+			<exception-mapping result="errorPage"	exception="java.lang.Exception">
+			</exception-mapping>
+	   </global-exception-mappings>
+	   -->
+	   <global-results>  
+            <result name="login" type="redirect">/login.jsp</result>  
+        </global-results>  
+ </package>
+ 
+ <!-- custom with auth -->
+  <package name="custom-auth" extends="custom-default">
+        <interceptors>
+        	<interceptor name="authenticationInterceptor" class="com.steven.framework.core.struts2.interceptor.AuthenticationInterceptor"/>
+            <interceptor name="authorizationInterceptor" class="com.steven.framework.core.struts2.interceptor.AuthorizationInterceptor"/>
+            <interceptor-stack name="customAuthStack">
+                <interceptor-ref name="authenticationInterceptor"/>
+                <interceptor-ref name="customDefaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="customAuthStack"/>
+ </package>
+ 
+  <!-- custom with authentication and authorization  -->
+  <package name="custom-authorization" extends="custom-default">
+        <interceptors>
+        	<interceptor name="authenticationInterceptor" class="com.steven.framework.core.struts2.interceptor.AuthenticationInterceptor"/>
+            <interceptor name="authorizationInterceptor" class="com.steven.framework.core.struts2.interceptor.AuthorizationInterceptor"/>
+            <interceptor-stack name="customAuthzStack">
+                <interceptor-ref name="authenticationInterceptor"/>
+                <interceptor-ref name="authorizationInterceptor"/>
+                <interceptor-ref name="customDefaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="customAuthzStack"/>
+        <global-results>  
+            <result name="login" type="redirect">/login.jsp</result> 
+            <result name="global_noPermission" type="redirect">/commons/403.jsp</result> 
+        </global-results>  
+ </package>
+
+	<!-- 公用 -->
+	<package name="commons" extends="custom-default" namespace="/">
+		<!-- 验证码结果类型 -->
+		<result-types>
+			<result-type name="captchaImage"
+				class="com.steven.framework.common.captcha.action.support.CaptchaImageResult" />
+		</result-types>
+		<!-- 记录登录日志拦截器 -->
+		<interceptors>
+			<interceptor name="authLogInterceptor"
+				class="com.steven.framework.core.struts2.interceptor.AuthLogInterceptor" />
+		</interceptors>
+
+		<!-- 验证码 -->
+		<action name="jcaptcha_image"
+			class="com.steven.framework.common.captcha.action.JCaptchaImageAction">
+			<result type="captchaImage" />
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		<!-- 主页面 -->
+		<action name="main" class="com.steven.front.action.MainAction">
+			<result>/main.jsp</result>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		<!-- 登录 -->
+		<action name="login" class="com.steven.front.action.LoginAction">
+			<result name="input">/login.jsp</result>
+			<result type="redirect">${forwardToURL}</result>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="authLogInterceptor"></interceptor-ref>
+		</action>
+	    <!-- 注册后立即登录 -->
+		<action name="loginAfterRegister" method="loginAfterRegister" class="com.steven.front.action.LoginAction">
+			<result name="input">/login.jsp</result>
+			<result type="redirect">${forwardToURL}</result>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="authLogInterceptor"></interceptor-ref>
+		</action>
+		<!-- 注销 -->
+		<action name="logout" class="com.steven.front.action.LogoutAction">
+			<result type="redirect">/login.jsp</result>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="authLogInterceptor"></interceptor-ref>
+		</action>
+	</package>
+
+	<!-- 用户操作 -->
+	<package name="member" namespace="/member" extends="custom-default">
+		<!-- 修改密码 -->
+		<action name="changePassword" method="changePassword" class="com.steven.member.action.MemberAction">
+			<result name="input">/member/changepwd.jsp</result>
+			<result name="success">/</result>
+		</action>
+		<!-- 进入用户更新页面 -->
+		<action name="toUpdateUserInfo" method="toUpdateUserInfo" class="com.steven.member.action.MemberAction">
+			<result name="success">/member/userinfo.jsp</result>
+		</action>
+		<!-- 更新用户信息 -->
+		<action name="updateUserInfo" method="updateUserInfo" class="com.steven.member.action.MemberAction">
+			<result name="input">/member/userinfo.jsp</result>
+			<result name="success">/</result>
+		</action>
+		<!-- 注册 -->
+		<action name="register" class="com.steven.member.action.RegisterAction">
+			<result name="input">/reg/register.jsp</result>
+			<!-- <result name="success">/reg/reg_success.jsp</result>-->
+			<result name="success" type="chain">
+			   <param name="actionName">loginAfterRegister</param>
+               <param name="namespace">/</param>
+             </result>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		
+		<!-- 忘记密码 -->
+		<action name="forgetPassword"  method="forgetPassword" class="com.steven.member.action.MemberAction">
+			<result name="input">/member/forgetpwd.jsp</result>
+			<result>/member/forgetpwd_confirm_email.jsp</result>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		
+		<!-- 忘记密码发送确认函 -->
+		<action name="sendResetPasswordEmail"  method="sendResetPasswordEmail" class="com.steven.member.action.MemberAction">
+			<result name="jsonResult" type="json">
+		      <param name="ignoreHierarchy">false</param>
+		      <param name="root">jsonResult</param>
+		    </result>
+		</action>
+		
+		<!-- 密码更改 -->
+		<action name="resetPassword"  method="resetPassword" class="com.steven.member.action.MemberAction">
+			<result>/member/resetpassword.jsp</result>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+	</package>
+	
+	<!-- 文件上传 -->
+    <package name="upload" namespace="/support" extends="custom-default">
+		<action name="fileupload" method="upload" class="com.steven.util.fileupload.action.FileUploadAction">
+		    <result name="jsonResult" type="json">
+		      <param name="ignoreHierarchy">false</param>
+		      <param name="root">jsonResult</param>
+		    </result>
+		</action>
+		<!-- 文件下载 进行下载历史记录-->
+		<action name="download"  class="com.dqs.biz.action.DownloadPlusAction">
+		    <result name="success" type="stream">
+				<param name="contentType">application/octet-stream;charset=iso8859-1</param>
+				<param name="contentDisposition">attachment;filename="${downLoadFileName}"</param>
+				<param name="inputName">inputStream</param>
+				<param name="allowCaching">false</param>
+				<param name="bufferSize">4096</param>
+			</result>
+			<result name="fileNotExist">/commons/fileNotExist.jsp</result>
+		</action>
+		<action name="authdownload"  class="com.dqs.biz.action.DownloadPlusAction">
+		    <result name="success" type="stream">
+				<param name="contentType">application/octet-stream;charset=iso8859-1</param>
+				<param name="contentDisposition">attachment;filename="${downLoadFileName}"</param>
+				<param name="inputName">inputStream</param>
+				<param name="allowCaching">false</param>
+				<param name="bufferSize">4096</param>
+			</result>
+			<result name="fileNotExist">/commons/fileNotExist.jsp</result>
+		</action>
+		<!-- 文件下载 old
+		<action name="download"  class="com.steven.util.fileupload.action.DownloadAction">
+		    <result name="success" type="stream">
+				<param name="contentType">application/octet-stream;charset=iso8859-1</param>
+				<param name="contentDisposition">attachment;filename="${downLoadFileName}"</param>
+				<param name="inputName">inputStream</param>
+				<param name="allowCaching">false</param>
+				<param name="bufferSize">4096</param>
+			</result>
+			<result name="fileNotExist">/commons/fileNotExist.jsp</result>
+		</action>
+		-->					
+    </package>
+    
+</struts>

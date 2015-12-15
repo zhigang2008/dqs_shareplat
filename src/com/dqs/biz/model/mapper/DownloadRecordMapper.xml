@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="DownloadRecord">
+
+	<resultMap id="RM.DownloadRecord" type="com.dqs.biz.model.DownloadRecord">
+        <result property="seqno" column="SEQNO"/>
+        <result property="userid" column="USERID"/>
+        <result property="userName" column="USER_NAME"/>
+        <result property="downloadTime" column="DOWNLOAD_TIME"/>
+        <result property="fileCatalog" column="FILE_CATALOG"/>
+        <result property="fileName" column="FILE_NAME"/>
+        <result property="fromip" column="FROMIP"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="DownloadRecord.columns">
+	    <![CDATA[
+		SEQNO,USERID,USER_NAME,DOWNLOAD_TIME,FILE_CATALOG,FILE_NAME,FROMIP
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="DownloadRecord.insert" >
+    <![CDATA[
+        INSERT INTO T_DOWNLOAD_RECORD (
+        	SEQNO ,
+        	USERID ,
+        	USER_NAME ,
+        	DOWNLOAD_TIME ,
+        	FILE_CATALOG ,
+        	FILE_NAME ,
+        	FROMIP 
+        ) VALUES (
+        	#{seqno,jdbcType=DECIMAL} ,
+        	#{userid,jdbcType=DECIMAL} ,
+        	#{userName,jdbcType=VARCHAR} ,
+        	#{downloadTime,jdbcType=TIMESTAMP} ,
+        	#{fileCatalog,jdbcType=VARCHAR} ,
+        	#{fileName,jdbcType=VARCHAR} ,
+        	#{fromip,jdbcType=VARCHAR} 
+        )
+    ]]>
+		<!--oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL -->
+			
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="seqno">
+			SELECT S_T_DOWNLOAD_RECORD.nextval  FROM DUAL 
+        </selectKey>
+	</insert>
+    
+	<update id="DownloadRecord.update" >
+    <![CDATA[
+        UPDATE T_DOWNLOAD_RECORD SET
+	        USERID = #{userid,jdbcType=DECIMAL} ,
+	        USER_NAME = #{userName,jdbcType=VARCHAR} ,
+	        DOWNLOAD_TIME = #{downloadTime,jdbcType=TIMESTAMP} ,
+	        FILE_CATALOG = #{fileCatalog,jdbcType=VARCHAR} ,
+	        FILE_NAME = #{fileName,jdbcType=VARCHAR} ,
+	        FROMIP = #{fromip,jdbcType=VARCHAR} 
+        WHERE 
+	        SEQNO = #{seqno} 
+    ]]>
+	</update>
+
+    <delete id="DownloadRecord.delete">
+    <![CDATA[
+        DELETE FROM T_DOWNLOAD_RECORD WHERE
+        SEQNO = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="DownloadRecord.getById" resultMap="RM.DownloadRecord">
+		SELECT <include refid="DownloadRecord.columns" />
+	    <![CDATA[
+		    FROM T_DOWNLOAD_RECORD 
+	        WHERE 
+		        SEQNO = #{id} 
+	    ]]>
+	</select>
+	<!-- 不建议,仅提供给数据量较少的基表查询 -->
+	 <select id="DownloadRecord.findAll" resultMap="RM.DownloadRecord">
+		SELECT <include refid="DownloadRecord.columns" />
+	    <![CDATA[
+		    FROM T_DOWNLOAD_RECORD 
+	    ]]>
+	</select>
+	<!-- 基础代码,视情况添加状态识别 -->
+	 <select id="DownloadRecord.baseCode" resultMap="RM.DownloadRecord">
+		SELECT <include refid="DownloadRecord.columns" />
+	    <![CDATA[
+		    FROM T_DOWNLOAD_RECORD 
+	    ]]>
+	    <!-- 视情况添加where条件 -->
+	</select>
+	
+	<sql id="DownloadRecord.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+	       <if test="@Ognl@isNotEmpty(seqno)">
+				AND SEQNO = #{seqno}
+			</if>
+	       <if test="@Ognl@isNotEmpty(userid)">
+				AND USERID = #{userid}
+			</if>
+	       <if test="@Ognl@isNotEmpty(userName)">
+				AND USER_NAME = #{userName}
+			</if>
+	       <if test="@Ognl@isNotEmpty(downloadTimeBegin)">
+				AND DOWNLOAD_TIME >= #{downloadTimeBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(downloadTimeEnd)">
+				AND DOWNLOAD_TIME &lt;= #{downloadTimeEnd}
+		   </if>
+	       <if test="@Ognl@isNotEmpty(fileCatalog)">
+				AND FILE_CATALOG like '%'||#{fileCatalog}||'%' 
+			</if>
+	       <if test="@Ognl@isNotEmpty(fileName)">
+				AND FILE_NAME like  '%'||#{fileName}||'%' 
+			</if>
+	       <if test="@Ognl@isNotEmpty(fromip)">
+				AND FROMIP = #{fromip}
+			</if>
+		</where>
+	</sql>
+		
+    <select id="DownloadRecord.findPage.count" resultType="long">
+        SELECT count(*) FROM T_DOWNLOAD_RECORD 
+		<include refid="DownloadRecord.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="DownloadRecord.findPage" resultMap="RM.DownloadRecord">
+    	SELECT <include refid="DownloadRecord.columns" />
+	    FROM T_DOWNLOAD_RECORD 
+		<include refid="DownloadRecord.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	
+</mapper>
+

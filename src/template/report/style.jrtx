@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperTemplate PUBLIC "-//JasperReports//DTD Template//EN" "http://jasperreports.sourceforge.net/dtds/jaspertemplate.dtd">
+
+<jasperTemplate>
+	<style name="defaultStyle" isDefault="true" mode="Transparent" fontName="宋体" fontSize="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H">
+		<box>
+			<pen lineColor="#CCCCCC"/>
+			<topPen lineColor="#CCCCCC"/>
+			<leftPen lineColor="#CCCCCC"/>
+			<bottomPen lineColor="#CCCCCC"/>
+			<rightPen lineColor="#CCCCCC"/>
+		</box>
+	</style>
+	<style name="font14" isDefault="false" mode="Transparent" fontName="宋体" fontSize="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H">
+	</style>
+	<style name="title" isDefault="false" mode="Transparent" fontName="宋体" fontSize="18" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H">
+	</style>
+    <style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#CCCCCC"/>
+		</box>
+	</style>
+	<style name="table_th" mode="Opaque" backcolor="#A3C0E8">
+		<box>
+			<pen lineWidth="0.5" lineColor="#DAE6F5"/>
+		</box>
+	</style>
+	<style name="table_ch" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#DAE6F5"/>
+		</box>
+	</style>
+	<style name="table_td_odd" mode="Opaque" backcolor="#F8F8F8">
+		<box>
+			<pen lineWidth="0.5" lineColor="#DAE6F5"/>
+		</box>
+	</style>
+	<style name="cell_th" mode="Transparent" fontName="宋体" forecolor="#000000" backcolor="#FFFFFF"  hAlign="Left" vAlign="Middle" isBlankWhenNull="true" fontSize="11" isBold="true" isItalic="false" isUnderline="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H">
+	</style>
+	<style name="cell_td" mode="Transparent" fontName="宋体" forecolor="#000000" backcolor="#FFFFFF"  hAlign="Left" vAlign="Middle" isBlankWhenNull="true" fontSize="9" isBold="false" isItalic="false" isUnderline="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H">
+	    <box>
+			<pen lineWidth="0.5" lineStyle="Dotted" lineColor="#DAE6F5"/>
+			<leftPen lineColor="#DAE6F5"/>
+			<rightPen lineColor="#DAE6F5"/>
+		</box>
+	</style>
+	<style name="foot_time" mode="Transparent" fontName="宋体" forecolor="#000000" backcolor="#FFFFFF"  isBlankWhenNull="true" fontSize="9" isBold="false" isItalic="true" isUnderline="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H">
+	</style>
+	<style name="foot_page" mode="Transparent" fontName="宋体" forecolor="#000000" backcolor="#FFFFFF"  isBlankWhenNull="true" fontSize="9" isBold="false" isItalic="false" isUnderline="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H">
+	</style>
+	<style name="foot_user" mode="Transparent" fontName="宋体" forecolor="#000000" backcolor="#FFFFFF"  hAlign="Right"  isBlankWhenNull="true" fontSize="9" isBold="false" isItalic="true" isUnderline="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H">
+	</style>
+</jasperTemplate>

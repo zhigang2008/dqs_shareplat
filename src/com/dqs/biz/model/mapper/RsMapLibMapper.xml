@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="RsMapLib">
+
+	<resultMap id="RM.RsMapLib" type="com.dqs.biz.model.RsMapLib">
+        <result property="seqno" column="SEQNO"/>
+        <result property="mapLibName" column="MAP_LIB_NAME"/>
+        <result property="mapCount" column="MAP_COUNT"/>
+        <result property="descFileLocation" column="DESC_FILE_LOCATION"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="remark" column="REMARK"/>
+        <result property="descFileName" column="DESC_FILE_NAME"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="RsMapLib.columns">
+	    <![CDATA[
+		SEQNO,MAP_LIB_NAME,MAP_COUNT,DESC_FILE_LOCATION,CREATE_TIME,REMARK,DESC_FILE_NAME
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="RsMapLib.insert" >
+    <![CDATA[
+        INSERT INTO T_RS_MAP_LIB (
+        	SEQNO ,
+        	MAP_LIB_NAME ,
+        	MAP_COUNT ,
+        	DESC_FILE_LOCATION ,
+        	CREATE_TIME ,
+        	REMARK ,
+        	DESC_FILE_NAME 
+        ) VALUES (
+        	#{seqno,jdbcType=VARCHAR} ,
+        	#{mapLibName,jdbcType=VARCHAR} ,
+        	#{mapCount,jdbcType=DECIMAL} ,
+        	#{descFileLocation,jdbcType=VARCHAR} ,
+        	#{createTime,jdbcType=TIMESTAMP} ,
+        	#{remark,jdbcType=VARCHAR} ,
+        	#{descFileName,jdbcType=VARCHAR} 
+        )
+    ]]>
+		
+	</insert>
+    
+	<update id="RsMapLib.update" >
+    <![CDATA[
+        UPDATE T_RS_MAP_LIB SET
+	        MAP_LIB_NAME = #{mapLibName,jdbcType=VARCHAR} ,
+	        MAP_COUNT = #{mapCount,jdbcType=DECIMAL} ,
+	        DESC_FILE_LOCATION = #{descFileLocation,jdbcType=VARCHAR} ,
+	        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP} ,
+	        REMARK = #{remark,jdbcType=VARCHAR} ,
+	        DESC_FILE_NAME = #{descFileName,jdbcType=VARCHAR} 
+        WHERE 
+	        SEQNO = #{seqno} 
+    ]]>
+	</update>
+
+    <delete id="RsMapLib.delete">
+    <![CDATA[
+        DELETE FROM T_RS_MAP_LIB WHERE
+        SEQNO = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="RsMapLib.getById" resultMap="RM.RsMapLib">
+		SELECT <include refid="RsMapLib.columns" />
+	    <![CDATA[
+		    FROM T_RS_MAP_LIB 
+	        WHERE 
+		        SEQNO = #{id} 
+	    ]]>
+	</select>
+	<!-- 不建议,仅提供给数据量较少的基表查询 -->
+	 <select id="RsMapLib.findAll" resultMap="RM.RsMapLib">
+		SELECT <include refid="RsMapLib.columns" />
+	    <![CDATA[
+		    FROM T_RS_MAP_LIB 
+	    ]]>
+	</select>
+	<!-- 基础代码,视情况添加状态识别 -->
+	 <select id="RsMapLib.baseCode" resultMap="RM.RsMapLib">
+		SELECT <include refid="RsMapLib.columns" />
+	    <![CDATA[
+		    FROM T_RS_MAP_LIB 
+	    ]]>
+	    <!-- 视情况添加where条件 -->
+	</select>
+	
+	<sql id="RsMapLib.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+	       <if test="@Ognl@isNotEmpty(seqno)">
+				AND SEQNO = #{seqno}
+			</if>
+	       <if test="@Ognl@isNotEmpty(mapLibName)">
+				AND MAP_LIB_NAME like '%'||#{mapLibName}||'%'
+			</if>
+	       <if test="@Ognl@isNotEmpty(mapCount)">
+				AND MAP_COUNT = #{mapCount}
+			</if>
+	       <if test="@Ognl@isNotEmpty(descFileLocation)">
+				AND DESC_FILE_LOCATION = #{descFileLocation}
+			</if>
+	       <if test="@Ognl@isNotEmpty(createTimeBegin)">
+				AND CREATE_TIME >= #{createTimeBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(createTimeEnd)">
+				AND CREATE_TIME &lt;= #{createTimeEnd}
+		   </if>
+	       <if test="@Ognl@isNotEmpty(remark)">
+				AND REMARK = #{remark}
+			</if>
+	       <if test="@Ognl@isNotEmpty(descFileName)">
+				AND DESC_FILE_NAME like '%'||#{descFileName}||'%'
+			</if>
+		</where>
+	</sql>
+		
+    <select id="RsMapLib.findPage.count" resultType="long">
+        SELECT count(*) FROM T_RS_MAP_LIB 
+		<include refid="RsMapLib.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="RsMapLib.findPage" resultMap="RM.RsMapLib">
+    	SELECT <include refid="RsMapLib.columns" />
+	    FROM T_RS_MAP_LIB 
+		<include refid="RsMapLib.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	
+</mapper>
+

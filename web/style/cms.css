@@ -1,0 +1,62 @@
+.searchdiv{width:100%;height:30px;line-height:30px;border-bottom:0px solid #ddd;padding-bottom:10px;}
+.searchdiv label{height:30px;line-height:30px;}
+.searchdiv input{width:100px; border:1px solid #E9E9E9; color: #777777;height:20px;}
+.post{	padding:10px 0;	margin:10px 0;	line-height:16px;	text-align:justify; border-bottom:#B0B7C2 dotted 1px;}
+.post h2{	margin:0;	padding:0 0 5px 0;}
+.post h2 a:link, .post h2 a:visited{	padding:0;	margin:0;	color:#2B4368;	font-size:23px;	font-weight:normal;	line-height:35px;	text-decoration:none;	text-transform:capitalize;}
+.post h2 a:hover{	text-decoration:underline;}
+.post h2.post-head{	float:left;}
+.post img{	float:left;}
+.post p{margin:0;	padding:15px 0 0 0;	color:#000;	font-size:11px;	font-family: Arial;	line-height:14px;}
+.postmetadata{	margin:0;	padding:0;	float:left;	width:100%; color:#666;	font-size:12px;	font-family: 'Arial';	text-transform:capitalize;	}
+.postmetadata span{ display:-moz-inline-box;  display:inline-block;  width:150px; text-align:center;}
+.postmetadata a:link, .postmetadata a:visited{	color:#6D90C0;	font-size:12px;	font-family: 'Arial';	font-weight:bold;	text-decoration:none;	text-transform:capitalize;}
+.postmetadata a:hover{	text-decoration:underline;}
+.postmetadata div{	float:left;	padding:0 0 10px 0;	margin:0;	color:#999;	font-size:12px;	font-family: 'Arial';	font-weight:normal;}
+.post .entry{font-size:12px;width:100%;color:#333; margin-bottom:10px; padding:5px 0;}
+.post .reply{margin:0;	padding:5px 0 10px;	width:100%;	color:#333;	font-size:12px;	font-family: 'Arial';	text-transform:capitalize;	}
+.left-nav{	float:left;	padding:0 15px 0 0;	margin:0; border-right:1px dotted #ccc;}
+.right-nav{float:right;padding:0;margin:0;}
+.postbody{padding-top:20px;}
+.postitem{border:0px dotted #ccc; font-size:12px;padding-bottom:10px;}
+.postitem .postlabel{font-size:14px;width:80px;float:left;line-height:27px;} 
+.postitem input, .postitem textarea{width:200px; border-radius: 3px 3px 3px 3px;}
+.postitem input{height:24px;line-height:24px; }
+.postitem input:focus, .postitem textarea:focus{border:1px solid #00CC00; }
+
+.twitter_blog {
+    background: url("../image/cms/bird_bg.gif") repeat-x scroll center top transparent;
+    height: 80px;
+    margin: 0;
+    padding: 0;
+}
+.twitter {
+    margin: 0 auto;
+    padding: 0;
+    width: 950px;
+}
+.twitter h2 {
+    color: #A3A3A3;
+    float: left;
+    font: bold 20px Arial,Helvetica,sans-serif;
+    margin: 0;
+    padding: 15px 0 0 10px;
+    width: 200px;
+}
+.twitter .bird {
+    float: right;
+    margin: 0;
+    padding: 0;
+    width: 370px;
+}
+.twitter .bird img {
+    float: left;
+    margin: 0 10px;
+    padding: 0;
+}
+.twitter .bird p {
+    color: #6B6B6B;
+    font: bold 12px/1.8em Arial,Helvetica,sans-serif;
+    margin: 0;
+    padding: 10px 0 0;
+}

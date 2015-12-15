@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="${project.name}" basedir="." default="war">
+	<!-- =================================================================== -->
+	<!-- 设置系统变量 -->
+	<!-- =================================================================== -->
+	<property environment="env" />
+	<property file="build.properties" />
+
+	<!-- 主要的lib path -->
+	<path id="master-classpath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<!--<fileset dir="d:\tomcat6\lib">
+		 <include name="**/*.jar" />
+		</fileset>
+		-->
+	</path>
+
+	<target name="generate-time">
+		<!-- 本次构建的时间戳 -->
+		<tstamp prefix="Build.">
+			<format property="time" pattern="yyyy-MM-dd HH:mm:ss"/>
+		</tstamp>
+	</target>
+
+
+	<!-- 清空所有代码目录以及临时目录 -->
+	<target name="clean-all" description="清空所有输出文件包括build和部署目录">
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
+	</target>
+
+
+	<!-- ************ client端 **************** -->
+	<target name="init" depends="generate-time" description="创建目录">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${classes.dir}" />
+		<mkdir dir="${war.dir}" />
+		<mkdir dir="${javadoc.dir}" />
+	</target>
+
+	<target name="compile"  depends="init" description="编译client Java文件">
+		<javac destdir="${classes.dir}" debug="on" deprecation="false" failonerror="true" target="1.6" encoding="utf-8">
+			<src path="${src.java.dir}" />
+			  <include name="com/**/*.java" />
+			  <classpath refid="master-classpath" />
+		</javac>
+	</target>
+	<target name="build-doc" depends="init" description="编译javadoc">
+		<!--编译客户端API-->
+		<javadoc
+			           destdir="${javadoc.dir}"
+			  	       Encoding="utf-8" 
+			  	       charset="utf-8" 
+			  	       docencoding="utf-8" 
+			           author="true"
+			           version="true"
+			           use="true" 
+			  	       Locale="zh_CN"
+			  	       access="private" 
+			           windowtitle="${project.title} API">
+  		        <fileset dir="${src.java.dir}" defaultexcludes="yes">
+			        <include name="com/**/*.java"/>
+			    </fileset>
+			    <doctitle><![CDATA[<h1>${project.title} API Docs</h1>]]></doctitle>
+			    <bottom><![CDATA[<i>Copyright &#169; 2012 ${project.title}. All Rights Reserved.</i>]]></bottom>
+			  	<classpath refid="master-classpath" />
+			  </javadoc>
+	</target>
+	<!--war包-->
+	<target name="war" depends="compile" description="发布war包">
+		<copy todir="${war.dir}">
+			<fileset dir="${web.dir}">
+				<exclude name="WEB-INF/classes/**/*.*"/>
+				<exclude name="WEB-INF/lib/**/*.*"/>
+				<exclude name="WEB-INF/web.xml"/>
+				<exclude name="**/*.bak"/>
+			</fileset>
+		</copy>
+		<copy todir="${war.dir}/WEB-INF/classes">
+					<fileset dir="${src.dir}">
+						<include name="**/*.xml"/>
+						<include name="**/*.properties"/>
+						<include name="**/*.ftl"/>
+					</fileset>
+		</copy>
+		
+		<war destfile="${dist.dir}/${project.name}.war" webxml="${web.dir}/WEB-INF/web.xml">
+	       <lib dir="${web.dir}/WEB-INF/lib"/> 
+		   <classes dir = "${classes.dir}"/> 
+		   <fileset dir="${war.dir}"> 
+		   </fileset> 
+		</war>
+		
+	</target>
+	<!--创建 zip发布包-->
+	<target name="all-zip" depends="build-doc,war">
+		<!--源代码-->
+		<zip destfile="${dist.dir}/${project.name}-src.zip">
+			<fileset dir="${src.dir}">
+			    <include name="**/*.java"/>
+				<include name="**/*.xml"/>
+				<include name="**/*.properties"/>
+				<include name="**/*.ftl"/>
+			</fileset>
+		</zip>
+		<!--docs-->
+		<zip destfile="${dist.dir}/${project.name}-doc.zip">
+			<fileset dir="${dist.dir}">
+				<include name="docs/**/*.*"/>
+			</fileset>
+		</zip>
+		<!--all-->
+		<zip destfile="${dist.dir}/${project.name}-all.zip">
+			<fileset dir="${dist.dir}">
+				<include name="*.zip"/>
+				<include name="${project.name}.war"/>
+			</fileset>
+		</zip>
+	</target>
+
+</project>

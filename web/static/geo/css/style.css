@@ -1,0 +1,75 @@
+/* CSS Document */
+INPUT {
+	FONT-SIZE: 10pt;  FONT-FAMILY: 宋体
+}
+BODY {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	background-color: #d6def1;
+}
+option{
+	FONT-SIZE: 10pt ;FONT-FAMILY: 宋体
+}
+table{
+	word-break:break-all
+}
+TR {
+	FONT-SIZE: 10pt
+}
+TD {
+	FONT-SIZE: 10pt
+}
+A:visited {
+	COLOR: #000000; TEXT-DECORATION: none
+}
+A:link {
+	COLOR: #000000; TEXT-DECORATION: none
+}
+
+A:active {
+	COLOR: #000000; TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: #ff4c4c; TEXT-DECORATION: none
+}
+
+.bluemiddle {
+	PADDING-RIGHT: 7px;
+	PADDING-LEFT: 9px;
+	FONT-SIZE: 14px;
+	BACKGROUND: url(../img/boxtop.gif) #00a1e1 repeat-x 50% top;
+	PADDING-BOTTOM: 5px;
+	COLOR: #FFFFFF;
+	LINE-HEIGHT: 13px;
+	PADDING-TOP: 6px;
+	font-weight: bold;
+}
+
+.box {
+	BORDER-RIGHT: #98aab1 1px solid; BORDER-TOP: #98aab1 1px solid; BORDER-LEFT: #98aab1 1px solid; BORDER-BOTTOM: #98aab1 1px solid
+}
+
+.m_r1 {
+	PADDING-LEFT: 14px; FONT-WEIGHT: 400; BACKGROUND: #ffffff; FILTER: progid:DXImageTransform.Microsoft.gradient(startColorStr=#afc3d7,endColorStr=#428dda); COLOR: #FFFFFF; FONT-FAMILY: "宋体"; HEIGHT: 30px
+}
+
+.m_r {
+	PADDING-LEFT: 14px; FONT-WEIGHT: 400; BACKGROUND: #ffffff; FILTER: progid:DXImageTransform.Microsoft.gradient(startColorStr=#053579,endColorStr=#076cfb); COLOR: #FFFFFF; FONT-FAMILY: "宋体"; HEIGHT: 22px
+}
+
+.m_r3 {
+	PADDING-LEFT: 14px; FONT-WEIGHT: 400; BACKGROUND: #ffffff; FILTER: progid:DXImageTransform.Microsoft.gradient(startColorStr=#053579,endColorStr=#076cfb); COLOR: #FFFFFF; FONT-FAMILY: "宋体"; HEIGHT: 22px
+}
+.sec_menu {
+	BORDER-RIGHT: white 1px solid; BACKGROUND: #d6dff7; OVERFLOW: hidden; BORDER-LEFT: white 1px solid; BORDER-BOTTOM: white 1px solid
+}
+
+.menu_title SPAN {
+	FONT-WEIGHT: bold; LEFT: 10px; COLOR: #215dc6; POSITION: relative; TOP: 2px 
+}
+
+.menu_title2 SPAN {
+	FONT-WEIGHT: bold; LEFT: 10px; COLOR: #428eff; POSITION: relative; TOP: 2px
+}

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="GlobalConfig">
+
+	<resultMap id="RM.GlobalConfig" type="com.steven.core.model.GlobalConfig">
+        <result property="id" column="ID"/>
+        <result property="param" column="PARAM"/>
+        <result property="paramValue" column="PARAM_VALUE"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="isCoreParam" column="IS_CORE_PARAM"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="GlobalConfig.columns">
+	    <![CDATA[
+		ID,PARAM,PARAM_VALUE,DESCRIPTION,IS_CORE_PARAM
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="GlobalConfig.insert" >
+    <![CDATA[
+        INSERT INTO T_SYS_GLOBAL_CONFIG (
+        	ID ,
+        	PARAM ,
+        	PARAM_VALUE ,
+        	DESCRIPTION ,
+        	IS_CORE_PARAM 
+        ) VALUES (
+        	#{id,jdbcType=INTEGER} ,
+        	#{param,jdbcType=VARCHAR} ,
+        	#{paramValue,jdbcType=VARCHAR} ,
+        	#{description,jdbcType=VARCHAR} ,
+        	#{isCoreParam,jdbcType=BIT} 
+        )
+    ]]>
+		<!--oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL -->
+			
+		<selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id">
+			SELECT S_T_SYS_GLOBAL_CONFIG.nextval  FROM DUAL 
+        </selectKey>
+	</insert>
+    
+	<update id="GlobalConfig.update" >
+    <![CDATA[
+        UPDATE T_SYS_GLOBAL_CONFIG SET
+	        PARAM = #{param,jdbcType=VARCHAR} ,
+	        PARAM_VALUE = #{paramValue,jdbcType=VARCHAR} ,
+	        DESCRIPTION = #{description,jdbcType=VARCHAR} ,
+	        IS_CORE_PARAM = #{isCoreParam,jdbcType=BIT} 
+        WHERE 
+	        ID = #{id} 
+    ]]>
+	</update>
+
+    <delete id="GlobalConfig.delete">
+    <![CDATA[
+        DELETE FROM T_SYS_GLOBAL_CONFIG WHERE
+        ID = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="GlobalConfig.getById" resultMap="RM.GlobalConfig">
+		SELECT <include refid="GlobalConfig.columns" />
+	    <![CDATA[
+		    FROM T_SYS_GLOBAL_CONFIG 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+	</select>
+	<!-- 不建议,仅提供给数据量较少的基表查询 -->
+	 <select id="GlobalConfig.findAll" resultMap="RM.GlobalConfig">
+		SELECT <include refid="GlobalConfig.columns" />
+	    <![CDATA[
+		    FROM T_SYS_GLOBAL_CONFIG 
+	    ]]>
+	</select>
+	
+	<sql id="GlobalConfig.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+	       <if test="@Ognl@isNotEmpty(id)">
+				AND ID = #{id}
+			</if>
+	       <if test="@Ognl@isNotEmpty(param)">
+				AND PARAM = #{param}
+			</if>
+	       <if test="@Ognl@isNotEmpty(paramValue)">
+				AND PARAM_VALUE = #{paramValue}
+			</if>
+	       <if test="@Ognl@isNotEmpty(description)">
+				AND DESCRIPTION = #{description}
+			</if>
+	       <if test="@Ognl@isNotEmpty(isCoreParam)">
+				AND IS_CORE_PARAM = #{isCoreParam}
+			</if>
+		</where>
+	</sql>
+		
+    <select id="GlobalConfig.findPage.count" resultType="long">
+        SELECT count(*) FROM T_SYS_GLOBAL_CONFIG 
+		<include refid="GlobalConfig.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="GlobalConfig.findPage" resultMap="RM.GlobalConfig">
+    	SELECT <include refid="GlobalConfig.columns" />
+	    FROM T_SYS_GLOBAL_CONFIG 
+		<include refid="GlobalConfig.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+    <select id="GlobalConfig.getByParam" resultMap="RM.GlobalConfig" parameterType="java.lang.String">
+	    SELECT <include refid="GlobalConfig.columns"/>
+	    <![CDATA[
+	        FROM T_SYS_GLOBAL_CONFIG where PARAM = #{param}
+	    ]]>
+    </select>
+    
+	
+</mapper>
+

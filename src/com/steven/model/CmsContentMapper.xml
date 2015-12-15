@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="CmsContent">
+
+	<resultMap id="RM.CmsContent" type="com.steven.cms.model.CmsContent">
+        <result property="id" column="ID"/>
+        <result property="uname" column="UNAME"/>
+        <result property="channelId" column="CHANNEL_ID"/>
+        <result property="title" column="TITLE"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="author" column="AUTHOR"/>
+        <result property="releaseDate" column="RELEASE_DATE"/>
+        <result property="typeId" column="TYPE_ID"/>
+        <result property="hitCount" column="HIT_COUNT"/>
+	</resultMap>
+	<!-- 包含内容文本 -->
+	<resultMap id="RM.CmsContent.all" type="com.steven.cms.model.CmsContent">
+        <result property="id" column="ID"/>
+        <result property="uname" column="UNAME"/>
+        <result property="channelId" column="CHANNEL_ID"/>
+        <result property="title" column="TITLE"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="author" column="AUTHOR"/>
+        <result property="releaseDate" column="RELEASE_DATE"/>
+        <result property="typeId" column="TYPE_ID"/>
+        <result property="hitCount" column="HIT_COUNT"/>
+        <association property="contentTxt" column="ID" select="CmsContentTxt.getById"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CmsContent.columns">
+	    <![CDATA[
+		ID,UNAME,CHANNEL_ID,TITLE,DESCRIPTION,AUTHOR,RELEASE_DATE,TYPE_ID,HIT_COUNT
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="CmsContent.insert" >
+    <![CDATA[
+        INSERT INTO T_CMS_CONTENT (
+        	ID ,
+        	UNAME ,
+        	CHANNEL_ID ,
+        	TITLE ,
+        	DESCRIPTION ,
+        	AUTHOR ,
+        	RELEASE_DATE ,
+        	TYPE_ID ,
+        	HIT_COUNT 
+        ) VALUES (
+        	#{id,jdbcType=DECIMAL} ,
+        	#{uname,jdbcType=VARCHAR} ,
+        	#{channelId,jdbcType=DECIMAL} ,
+        	#{title,jdbcType=VARCHAR} ,
+        	#{description,jdbcType=VARCHAR} ,
+        	#{author,jdbcType=VARCHAR} ,
+        	#{releaseDate,jdbcType=TIMESTAMP} ,
+        	#{typeId,jdbcType=DECIMAL} ,
+        	#{hitCount,jdbcType=DECIMAL} 
+        )
+    ]]>
+		<!--oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL -->
+			
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+			SELECT S_T_CMS_CONTENT.nextval  FROM DUAL 
+        </selectKey>
+	</insert>
+    
+	<update id="CmsContent.update" >
+    <![CDATA[
+        UPDATE T_CMS_CONTENT SET
+	        UNAME = #{uname,jdbcType=VARCHAR} ,
+	        CHANNEL_ID = #{channelId,jdbcType=DECIMAL} ,
+	        TITLE = #{title,jdbcType=VARCHAR} ,
+	        DESCRIPTION = #{description,jdbcType=VARCHAR} ,
+	        AUTHOR = #{author,jdbcType=VARCHAR} ,
+	        RELEASE_DATE = #{releaseDate,jdbcType=TIMESTAMP} ,
+	        TYPE_ID = #{typeId,jdbcType=DECIMAL} ,
+	        HIT_COUNT = #{hitCount,jdbcType=DECIMAL} 
+        WHERE 
+	        ID = #{id} 
+    ]]>
+	</update>
+
+    <delete id="CmsContent.delete">
+    <![CDATA[
+        DELETE FROM T_CMS_CONTENT WHERE
+        ID = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="CmsContent.getById" resultMap="RM.CmsContent.all">
+		SELECT <include refid="CmsContent.columns" />
+	    <![CDATA[
+		    FROM T_CMS_CONTENT 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+	</select>
+	<!-- 不建议,仅提供给数据量较少的基表查询 -->
+	 <select id="CmsContent.findAll" resultMap="RM.CmsContent">
+		SELECT <include refid="CmsContent.columns" />
+	    <![CDATA[
+		    FROM T_CMS_CONTENT 
+	    ]]>
+	</select>
+	<!-- 基础代码,视情况添加状态识别 -->
+	 <select id="CmsContent.baseCode" resultMap="RM.CmsContent">
+		SELECT <include refid="CmsContent.columns" />
+	    <![CDATA[
+		    FROM T_CMS_CONTENT 
+	    ]]>
+	    <!-- 视情况添加where条件 -->
+	</select>
+	
+	<sql id="CmsContent.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+	       <if test="@Ognl@isNotEmpty(id)">
+				AND ID = #{id}
+			</if>
+	       <if test="@Ognl@isNotEmpty(uname)">
+				AND UNAME = #{uname}
+			</if>
+	       <if test="@Ognl@isNotEmpty(channelId)">
+				AND CHANNEL_ID = #{channelId}
+			</if>
+	       <if test="@Ognl@isNotEmpty(title)">
+				AND TITLE like '%'||#{title}||'%'
+			</if>
+	       <if test="@Ognl@isNotEmpty(description)">
+				AND DESCRIPTION = #{description}
+			</if>
+	       <if test="@Ognl@isNotEmpty(author)">
+				AND AUTHOR = #{author}
+			</if>
+	       <if test="@Ognl@isNotEmpty(releaseDateBegin)">
+				AND RELEASE_DATE >= #{releaseDateBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(releaseDateEnd)">
+				AND RELEASE_DATE &lt;= #{releaseDateEnd}
+		   </if>
+	       <if test="@Ognl@isNotEmpty(typeId)">
+				AND TYPE_ID = #{typeId}
+			</if>
+	       <if test="@Ognl@isNotEmpty(hitCount)">
+				AND HIT_COUNT = #{hitCount}
+			</if>
+		</where>
+	</sql>
+		
+    <select id="CmsContent.findPage.count" resultType="long">
+        SELECT count(*) FROM T_CMS_CONTENT 
+		<include refid="CmsContent.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="CmsContent.findPage" resultMap="RM.CmsContent">
+    	SELECT <include refid="CmsContent.columns" />
+	    FROM T_CMS_CONTENT 
+		<include refid="CmsContent.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+ <select id="CmsContent.getByUname" resultMap="RM.CmsContent.all" parameterType="java.lang.String">
+	    SELECT <include refid="CmsContent.columns"/>
+	    <![CDATA[
+	        FROM T_CMS_CONTENT where UNAME = #{uname}
+	    ]]>
+    </select>
+	
+</mapper>
+

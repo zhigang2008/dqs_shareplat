@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="BoreholeStationItem">
+
+	<resultMap id="RM.BoreholeStationItem" type="com.dqs.biz.model.BoreholeStationItem">
+        <result property="id" column="ID"/>
+        <result property="code" column="CODE"/>
+        <result property="name" column="NAME"/>
+        <result property="note" column="NOTE"/>
+        <result property="sortno" column="SORTNO"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="BoreholeStationItem.columns">
+	    <![CDATA[
+		ID,CODE,NAME,NOTE,SORTNO
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="BoreholeStationItem.insert" >
+    <![CDATA[
+        INSERT INTO T_BOREHOLE_STATION_ITEM (
+        	ID ,
+        	CODE ,
+        	NAME ,
+        	NOTE ,
+        	SORTNO 
+        ) VALUES (
+        	#{id,jdbcType=DECIMAL} ,
+        	#{code,jdbcType=VARCHAR} ,
+        	#{name,jdbcType=VARCHAR} ,
+        	#{note,jdbcType=VARCHAR} ,
+        	#{sortno,jdbcType=DECIMAL} 
+        )
+    ]]>
+		<!--oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL -->
+			
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+			SELECT S_T_BOREHOLE_STATION_ITEM.nextval  FROM DUAL 
+        </selectKey>
+	</insert>
+    
+	<update id="BoreholeStationItem.update" >
+    <![CDATA[
+        UPDATE T_BOREHOLE_STATION_ITEM SET
+	        CODE = #{code,jdbcType=VARCHAR} ,
+	        NAME = #{name,jdbcType=VARCHAR} ,
+	        NOTE = #{note,jdbcType=VARCHAR} ,
+	        SORTNO = #{sortno,jdbcType=DECIMAL} 
+        WHERE 
+	        ID = #{id} 
+    ]]>
+	</update>
+
+    <delete id="BoreholeStationItem.delete">
+    <![CDATA[
+        DELETE FROM T_BOREHOLE_STATION_ITEM WHERE
+        ID = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="BoreholeStationItem.getById" resultMap="RM.BoreholeStationItem">
+		SELECT <include refid="BoreholeStationItem.columns" />
+	    <![CDATA[
+		    FROM T_BOREHOLE_STATION_ITEM 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+	</select>
+	<!-- 不建议,仅提供给数据量较少的基表查询 -->
+	 <select id="BoreholeStationItem.findAll" resultMap="RM.BoreholeStationItem">
+		SELECT <include refid="BoreholeStationItem.columns" />
+	    <![CDATA[
+		    FROM T_BOREHOLE_STATION_ITEM 
+	    ]]>
+	</select>
+	<!-- 基础代码,视情况添加状态识别 -->
+	 <select id="BoreholeStationItem.baseCode" resultMap="RM.BoreholeStationItem">
+		SELECT <include refid="BoreholeStationItem.columns" />
+	    <![CDATA[
+		    FROM T_BOREHOLE_STATION_ITEM 
+		    ORDER BY SORTNO ASC
+	    ]]>
+	    <!-- 视情况添加where条件 -->
+	</select>
+	
+	<sql id="BoreholeStationItem.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+	       <if test="@Ognl@isNotEmpty(id)">
+				AND ID = #{id}
+			</if>
+	       <if test="@Ognl@isNotEmpty(code)">
+				AND CODE = #{code}
+			</if>
+	       <if test="@Ognl@isNotEmpty(name)">
+				AND NAME = #{name}
+			</if>
+	       <if test="@Ognl@isNotEmpty(note)">
+				AND NOTE = #{note}
+			</if>
+	       <if test="@Ognl@isNotEmpty(sortno)">
+				AND SORTNO = #{sortno}
+			</if>
+		</where>
+	</sql>
+		
+    <select id="BoreholeStationItem.findPage.count" resultType="long">
+        SELECT count(*) FROM T_BOREHOLE_STATION_ITEM 
+		<include refid="BoreholeStationItem.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="BoreholeStationItem.findPage" resultMap="RM.BoreholeStationItem">
+    	SELECT <include refid="BoreholeStationItem.columns" />
+	    FROM T_BOREHOLE_STATION_ITEM 
+		<include refid="BoreholeStationItem.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+    <select id="BoreholeStationItem.getByCode" resultMap="RM.BoreholeStationItem" parameterType="java.lang.String">
+	    SELECT <include refid="BoreholeStationItem.columns"/>
+	    <![CDATA[
+	        FROM T_BOREHOLE_STATION_ITEM where CODE = #{code}
+	    ]]>
+    </select>
+
+	<!-- 获取可提供的观测项信息 -->
+	 <select id="BoreholeStationItem.getNotExistItems" resultMap="RM.BoreholeStationItem">
+		<![CDATA[
+         SELECT CODE,NAME FROM T_BOREHOLE_STATION_ITEM  I
+         WHERE NOT EXISTS (
+               SELECT ITEM_CODE,ITEM_CNAME   
+               FROM T_BOREHOLE_STATION S
+               WHERE  S.ITEM_CODE=I.CODE 
+               AND STATION_CODE=#{STATIONCODE} )
+        ORDER BY I.SORTNO
+	    ]]>
+	</select>
+</mapper>
+

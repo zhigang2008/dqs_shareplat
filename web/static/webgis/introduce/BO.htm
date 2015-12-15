@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>数据库简介</title>
+<style type="text/css">
+<!--
+.style1 {font-size: 12px}
+-->
+</style>
+</head>
+
+<body>
+<p class="style1">&nbsp;&nbsp;&nbsp;&nbsp;钻孔崩落数据的测试深度一般大于1000米，最大深度达到5000多米。钻孔崩落数据在深度上填补了原地应力测量（水<br>
+压致裂和应力解除测试数据）与震源机制解数据之间的深度上的空白地段，是在较大空间尺度上研究地壳应力分布规律的<br>
+重要资料。</p>
+<table width="634" border="1" bordercolor="#000000">
+  <tr>
+    <td width="558"><p class="style1"><strong>数据表名称：钻孔崩落</strong></p></td>
+    <td width="60"><div align="center"><a href="../data/BO.doc" class="style1">下载</a></div></td>
+  </tr>
+  <tr>
+    <td colspan="2" class="style1"><p><strong>数据表字段说明：</strong></p>
+      <table cellspacing="0" cellpadding="0">
+        <tr valign="middle">
+          <td width="64" height="25"><p align="center"><strong>字段</strong><strong>序号</strong></p>
+          </td>
+          <td width="74" height="25"><p align="center"><strong>字段名称</strong></p></td>
+          <td width="160" height="25"><p align="center"><strong>字段定义</strong></p></td>
+          <td width="110" height="25"><p align="center"><strong>字段取</strong><strong>值类型</strong></p>
+          </td>
+          <td width="54" height="25"><p align="center"><strong>字段长</strong></p></td>
+          <td width="100" height="25"><p align="center"><strong>值域说明</strong></p></td>
+          <td width="60" height="25"><p align="center"><strong>计量</strong><strong>单位</strong></p>
+          </td>
+        </tr>
+        <tr valign="middle">
+          <td width="64" height="25"><p align="center">1</p></td>
+          <td width="74" height="25"><p align="center">记录号</p></td>
+          <td width="160" height="25"><p align="center">资料在数据库中记录编号</p></td>
+          <td width="110" height="25"><p align="center">数字型</p></td>
+          <td width="54" height="25"><p align="center">I4</p></td>
+          <td width="100" height="25"><p align="center">自由文本</p></td>
+          <td width="60" height="25"><p align="center">&nbsp;</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="64" height="25"><p align="center">2</p></td>
+          <td width="74" height="25"><p align="center">纬度</p></td>
+          <td width="160" height="25"><p align="center">测量点的纬度</p></td>
+          <td width="110" height="25"><p align="center">数字型</p></td>
+          <td width="54" height="25"><p align="center">&nbsp;</p></td>
+          <td width="100" height="25"><p align="center">自由文本</p></td>
+          <td width="60" height="25"><p align="center">o</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="64" height="25"><p align="center">3</p></td>
+          <td width="74" height="25"><p align="center">经度</p></td>
+          <td width="160" height="25"><p align="center">测量点的经度</p></td>
+          <td width="110" height="25"><p align="center">数字型</p></td>
+          <td width="54" height="25"><p align="center">&nbsp;</p></td>
+          <td width="100" height="25"><p align="center">自由文本</p></td>
+          <td width="60" height="25"><p align="center">o</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="64" height="25"><p align="center">4</p></td>
+          <td width="74" height="25"><p align="center">方位</p></td>
+          <td width="160" height="25"><p align="center">最大水平主应力方位（SH）</p></td>
+          <td width="110" height="25"><p align="center">数字型</p></td>
+          <td width="54" height="25"><p align="center">&nbsp;</p></td>
+          <td width="100" height="25"><p align="center">0～360</p></td>
+          <td width="60" height="25"><p align="center">o</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="64" height="25"><p align="center">5</p></td>
+          <td width="74" height="25"><p align="center">地点</p></td>
+          <td width="160" height="25"><p align="center"> 测量地点（省、市、县） </p></td>
+          <td width="110" height="25"><p align="center">字符型</p></td>
+          <td width="54" height="25"><p align="center">A20</p></td>
+          <td width="100" height="25"><p align="center">自由文本</p></td>
+          <td width="60" height="25"><p align="center">&nbsp;</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="64" height="41"><p align="center">6</p></td>
+          <td width="74" height="41"><p align="center">应力状态</p></td>
+          <td width="160" height="41"><p align="center">数据指示的应力状态<br>
+（应力状态详解） </p></td>
+          <td width="110" height="41"><p align="center">字符型</p></td>
+          <td width="54" height="41"><p align="center">A2</p></td>
+          <td width="100" height="41"><p align="center">UD</p></td>
+          <td width="60" height="41"><p align="center">&nbsp;</p></td>
+        </tr>
+        <tr valign="middle">
+          <td width="64" height="40"><p align="center">7</p></td>
+          <td width="74" height="40"><p align="center">应力分区</p></td>
+          <td width="160" height="40"><p align="center">数据点所在的应力分区代码<br>
+          （应力分区详解）          </p></td>
+          <td width="110" height="40"><p align="center">字符型</p></td>
+          <td width="54" height="40"><p align="center">A4</p></td>
+          <td width="100" height="40"><p align="center">应力分区代码</p></td>
+          <td width="60" height="40"><p align="center">&nbsp;</p></td>
+        </tr>
+        <tr valign="middle">
+          <td height="25"><div align="center">8</div></td>
+          <td height="25"><div align="center">深度</div></td>
+          <td height="25"><div align="center">钻孔崩落的平均深度</div></td>
+          <td height="25"><div align="center">数字型</div></td>
+          <td height="25"><div align="center">I4</div></td>
+          <td height="25"><div align="center">自由文本</div></td>
+          <td height="25"><div align="center">m</div></td>
+        </tr>
+        <tr valign="middle">
+          <td height="25"><div align="center">9</div></td>
+          <td height="25"><div align="center">类型*</div></td>
+          <td height="25"><div align="center">钻孔崩落数据类型</div></td>
+          <td height="25"><div align="center">字符型</div></td>
+          <td height="25"><div align="center">A3</div></td>
+          <td height="25"><p align="center">BO,BOCBOT,BOCT </p>
+          </td>
+          <td height="25"><div align="center"></div></td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td height="77" colspan="2"><table width="623" border="1" cellpadding="0">
+      <tr bordercolor="#FFFFFF">
+        <td width="57" height="67" valign="top"><span class="style1">          *备注</span></td>
+        <td width="554"><span class="style1">类型说明：<br>
+          BO: 单个崩落资料分析得到的钻孔崩落方位<br>
+          </span><SPAN class="style1" 
+lang=EN-US>BOC: 整个钻孔截面形态分析得到的钻孔崩落方位<br>
+          BOT: 由单个钻孔崩落的井下电视的形态得到的钻孔崩落方位<br>
+          BOCT:由井下电视获得的整个钻孔截面形态分析得到的钻孔崩落方位</SPAN></td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+
+</body>
+</html>

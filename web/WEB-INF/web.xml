@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>shareplatform</display-name>
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath*:config/spring/*.xml</param-value>
+  </context-param>
+  <!-- i18n配置 
+  <context-param>
+    <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+    <param-value>i18n/messages</param-value>
+  </context-param>
+  -->
+    <filter>
+    <filter-name>encodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <!-- Shiro Filter is defined in the spring application context: -->
+    <filter>
+        <filter-name>shiroFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+   <filter>
+    <filter-name>struts2-cleanup</filter-name>
+    <filter-class>org.apache.struts2.dispatcher.ActionContextCleanUp</filter-class>
+  </filter>
+  <filter>
+    <filter-name>struts2Filter</filter-name>
+    <filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
+  </filter>
+  <filter>
+    <filter-name>LoggerMDCFilter</filter-name>
+    <filter-class>com.steven.framework.common.filter.LoggerMDCFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>encodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+      <!-- 安全控制shiro -->
+   <filter-mapping>
+        <filter-name>shiroFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping> 
+   <filter-mapping>
+    <filter-name>LoggerMDCFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>struts2-cleanup</filter-name>
+    <url-pattern>*.do</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>struts2Filter</filter-name>
+    <url-pattern>*.do</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>struts2Filter</filter-name>
+    <url-pattern>*.jsp</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>struts2Filter</filter-name>
+    <url-pattern>/struts/*</url-pattern>
+  </filter-mapping>
+ 
+  <!-- fckeditor servlet   -->
+  <servlet>
+    <servlet-name>ConnectorServlet</servlet-name>
+    <servlet-class>
+			net.fckeditor.connector.ConnectorServlet
+		</servlet-class>
+    <init-param>
+      <param-name>debug</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ConnectorServlet</servlet-name>
+    <url-pattern>/fckeditor/editor/filemanager/connectors/*</url-pattern>
+  </servlet-mapping>
+  <!-- freemarker jsp support 
+   <servlet>
+        <servlet-name>JspSupportservlet</servlet-name>
+        <servlet-class>org.apache.struts2.views.JspSupportServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+     <servlet-mapping>
+        <servlet-name>JspSupportservlet</servlet-name>
+        <url-pattern>*.ftl</url-pattern>
+    </servlet-mapping>
+  -->
+  <!--  用Servlet实现验证码 
+  <servlet>
+    <description></description>
+    <display-name>JCaptchaServlet</display-name>
+    <servlet-name>JCaptchaServlet</servlet-name>
+    <servlet-class>com.steven.common.captcha.JCaptchaServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>JCaptchaServlet</servlet-name>
+    <url-pattern>/JCaptchaServlet</url-pattern>
+  </servlet-mapping>
+  -->
+  
+  <!--Spring ApplicationContext 载入 -->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <!-- 使Spring支持request与session的scope,如:<bean id="loginAction" class="com.foo.LoginAction" scope="request"/> -->
+  <listener>
+    <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+  </listener>
+  <!-- Spring 刷新Introspector防止内存泄露 -->
+  <listener>
+    <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+  </listener>
+  
+  <!-- session 时效 -->
+  <session-config>
+    <session-timeout>30</session-timeout>
+  </session-config>
+  
+  <mime-mapping>
+        <extension>rar</extension>
+        <mime-type>application/octet-stream</mime-type>
+  </mime-mapping>
+
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+  </welcome-file-list>
+  
+  <!-- 内部错误页面 -->
+  <error-page>
+    <error-code>500</error-code>
+    <location>/commons/error.jsp</location>
+  </error-page>
+  
+  <error-page>
+    <error-code>404</error-code>
+    <location>/commons/404.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>403</error-code>
+    <location>/commons/403.jsp</location>
+  </error-page>
+  
+</web-app>

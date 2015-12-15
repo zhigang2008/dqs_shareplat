@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="User">
+
+	<resultMap id="RM.User" type="com.steven.core.model.User">
+        <result property="userid" column="USERID" />
+        <result property="userName" column="USER_NAME" />
+        <result property="password" column="PASSWORD" />
+        <result property="userTypeId" column="USER_TYPE_ID"/>
+        <result property="realName" column="REAL_NAME"/>
+        <result property="email" column="EMAIL"/>
+        <result property="idType" column="ID_TYPE"/>
+        <result property="idCode" column="ID_CODE"/>
+        <result property="mobile" column="MOBILE"/>
+        <result property="mobile2" column="MOBILE2"/>
+        <result property="telephone" column="TELEPHONE"/>
+        <result property="telephone2" column="TELEPHONE2"/>
+        <result property="address" column="ADDRESS"/>
+        <result property="postcode" column="POSTCODE"/>
+        <result property="title" column="TITLE"/>
+        <result property="registerTime" column="REGISTER_TIME"/>
+        <result property="registerIp" column="REGISTER_IP"/>
+        <result property="lastLoginTime" column="LAST_LOGIN_TIME"/>
+        <result property="lastLoginIp" column="LAST_LOGIN_IP"/>
+        <result property="loginCount" column="LOGIN_COUNT"/>
+        <result property="rank" column="RANK"/>
+        <result property="isDisabled" column="IS_DISABLED"/>
+        <association property="userType" column="USER_TYPE_ID" select="UserType.getById"/>
+        <collection property="userRoles" column="USERID" javaType="java.util.HashSet" ofType="com.steven.core.model.UserRole" select="UserRole.getUserRoleByUserId"/>
+        <collection property="userGroups" column="USERID" javaType="java.util.HashSet" ofType="com.steven.core.model.UserGroup" select="UserGroup.getUserGroupByUserId"/>
+        
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="User.columns">
+	    <![CDATA[
+		USERID,USER_NAME,PASSWORD,USER_TYPE_ID,REAL_NAME,EMAIL,ID_TYPE,ID_CODE,MOBILE,MOBILE2,TELEPHONE,TELEPHONE2,ADDRESS,POSTCODE,TITLE,REGISTER_TIME,REGISTER_IP,LAST_LOGIN_TIME,LAST_LOGIN_IP,LOGIN_COUNT,RANK,IS_DISABLED
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="User.insert" >
+    <![CDATA[
+        INSERT INTO T_SYS_USER (
+        	USERID ,
+        	USER_NAME ,
+        	PASSWORD ,
+        	USER_TYPE_ID ,
+        	REAL_NAME ,
+        	EMAIL ,
+        	ID_TYPE ,
+        	ID_CODE ,
+        	MOBILE ,
+        	MOBILE2 ,
+        	TELEPHONE ,
+        	TELEPHONE2 ,
+        	ADDRESS ,
+        	POSTCODE ,
+        	TITLE ,
+        	REGISTER_TIME ,
+        	REGISTER_IP ,
+        	LAST_LOGIN_TIME ,
+        	LAST_LOGIN_IP ,
+        	LOGIN_COUNT ,
+        	RANK ,
+        	IS_DISABLED 
+        ) VALUES (
+        	#{userid,jdbcType=INTEGER} ,
+        	#{userName,jdbcType=VARCHAR} ,
+        	#{password,jdbcType=VARCHAR} ,
+        	#{userTypeId,jdbcType=INTEGER} ,
+        	#{realName,jdbcType=VARCHAR} ,
+        	#{email,jdbcType=VARCHAR} ,
+        	#{idType,jdbcType=INTEGER} ,
+        	#{idCode,jdbcType=VARCHAR} ,
+        	#{mobile,jdbcType=VARCHAR} ,
+        	#{mobile2,jdbcType=VARCHAR} ,
+        	#{telephone,jdbcType=VARCHAR} ,
+        	#{telephone2,jdbcType=VARCHAR} ,
+        	#{address,jdbcType=VARCHAR} ,
+        	#{postcode,jdbcType=VARCHAR} ,
+        	#{title,jdbcType=VARCHAR} ,
+        	#{registerTime,jdbcType=TIMESTAMP} ,
+        	#{registerIp,jdbcType=VARCHAR} ,
+        	#{lastLoginTime,jdbcType=TIMESTAMP} ,
+        	#{lastLoginIp,jdbcType=VARCHAR} ,
+        	#{loginCount,jdbcType=INTEGER} ,
+        	#{rank,jdbcType=INTEGER} ,
+        	#{isDisabled,jdbcType=BIT} 
+        )
+    ]]>
+		<!--oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL -->
+			
+		<selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="userid">
+			SELECT S_T_SYS_USER.nextval  FROM DUAL 
+        </selectKey>
+	</insert>
+    
+	<update id="User.update" >
+    <![CDATA[
+        UPDATE T_SYS_USER SET
+	        USER_NAME = #{userName,jdbcType=VARCHAR} ,
+	        PASSWORD = #{password,jdbcType=VARCHAR} ,
+	        USER_TYPE_ID = #{userTypeId,jdbcType=INTEGER} ,
+	        REAL_NAME = #{realName,jdbcType=VARCHAR} ,
+	        EMAIL = #{email,jdbcType=VARCHAR} ,
+	        ID_TYPE = #{idType,jdbcType=INTEGER} ,
+	        ID_CODE = #{idCode,jdbcType=VARCHAR} ,
+	        MOBILE = #{mobile,jdbcType=VARCHAR} ,
+	        MOBILE2 = #{mobile2,jdbcType=VARCHAR} ,
+	        TELEPHONE = #{telephone,jdbcType=VARCHAR} ,
+	        TELEPHONE2 = #{telephone2,jdbcType=VARCHAR} ,
+	        ADDRESS = #{address,jdbcType=VARCHAR} ,
+	        POSTCODE = #{postcode,jdbcType=VARCHAR} ,
+	        TITLE = #{title,jdbcType=VARCHAR} ,
+	        REGISTER_TIME = #{registerTime,jdbcType=TIMESTAMP} ,
+	        REGISTER_IP = #{registerIp,jdbcType=VARCHAR} ,
+	        LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP} ,
+	        LAST_LOGIN_IP = #{lastLoginIp,jdbcType=VARCHAR} ,
+	        LOGIN_COUNT = #{loginCount,jdbcType=INTEGER} ,
+	        RANK = #{rank,jdbcType=INTEGER} ,
+	        IS_DISABLED = #{isDisabled,jdbcType=BIT} 
+        WHERE 
+	        USERID = #{userid} 
+    ]]>
+	</update>
+
+    <delete id="User.delete">
+    <![CDATA[
+        DELETE FROM T_SYS_USER WHERE
+        USERID = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="User.getById" resultMap="RM.User">
+		SELECT <include refid="User.columns" />
+	    <![CDATA[
+		    FROM T_SYS_USER 
+	        WHERE 
+		        USERID = #{id} 
+	    ]]>
+	</select>
+	<!-- 不建议,仅提供给数据量较少的基表查询 -->
+	 <select id="User.findAll" resultMap="RM.User">
+		SELECT <include refid="User.columns" />
+	    <![CDATA[
+		    FROM T_SYS_USER 
+	    ]]>
+	</select>
+	<!-- 基表数据 -->
+	 <select id="User.baseCode" resultMap="RM.User">
+		SELECT <include refid="User.columns" />
+	    <![CDATA[
+		    FROM T_SYS_USER 
+		    WHERE IS_DISABLED=0
+		    AND USERID >= 100
+	    ]]>
+	</select>
+	
+	<sql id="User.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	
+		        AND USERID > 0    				
+	       <if test="@Ognl@isNotEmpty(userid)">
+				AND USERID = #{userid}
+			</if>
+	       <if test="@Ognl@isNotEmpty(userName)">
+				AND USER_NAME like '%'||#{userName}||'%'
+			</if>
+	       <if test="@Ognl@isNotEmpty(password)">
+				AND PASSWORD = #{password}
+			</if>
+	       <if test="@Ognl@isNotEmpty(userTypeId)">
+				AND USER_TYPE_ID = #{userTypeId}
+			</if>
+	       <if test="@Ognl@isNotEmpty(realName)">
+				AND REAL_NAME like '%'||#{realName}||'%'
+			</if>
+	       <if test="@Ognl@isNotEmpty(email)">
+				AND EMAIL like '%'||#{email}||'%'
+			</if>
+	       <if test="@Ognl@isNotEmpty(idType)">
+				AND ID_TYPE = #{idType}
+			</if>
+	       <if test="@Ognl@isNotEmpty(idCode)">
+				AND ID_CODE = #{idCode}
+			</if>
+	       <if test="@Ognl@isNotEmpty(mobile)">
+				AND MOBILE = #{mobile}
+			</if>
+	       <if test="@Ognl@isNotEmpty(mobile2)">
+				AND MOBILE2 = #{mobile2}
+			</if>
+	       <if test="@Ognl@isNotEmpty(telephone)">
+				AND TELEPHONE = #{telephone}
+			</if>
+	       <if test="@Ognl@isNotEmpty(telephone2)">
+				AND TELEPHONE2 = #{telephone2}
+			</if>
+	       <if test="@Ognl@isNotEmpty(address)">
+				AND ADDRESS like '%'||#{address}||'%'
+			</if>
+	       <if test="@Ognl@isNotEmpty(postcode)">
+				AND POSTCODE = #{postcode}
+			</if>
+	       <if test="@Ognl@isNotEmpty(title)">
+				AND TITLE = #{title}
+			</if>
+	       <if test="@Ognl@isNotEmpty(registerTimeBegin)">
+				AND REGISTER_TIME >= #{registerTimeBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(registerTimeEnd)">
+				AND REGISTER_TIME &lt;= #{registerTimeEnd}
+		   </if>
+	       <if test="@Ognl@isNotEmpty(registerIp)">
+				AND REGISTER_IP = #{registerIp}
+			</if>
+	       <if test="@Ognl@isNotEmpty(lastLoginTimeBegin)">
+				AND LAST_LOGIN_TIME >= #{lastLoginTimeBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(lastLoginTimeEnd)">
+				AND LAST_LOGIN_TIME &lt;= #{lastLoginTimeEnd}
+		   </if>
+	       <if test="@Ognl@isNotEmpty(lastLoginIp)">
+				AND LAST_LOGIN_IP = #{lastLoginIp}
+			</if>
+	       <if test="@Ognl@isNotEmpty(loginCount)">
+				AND LOGIN_COUNT = #{loginCount}
+			</if>
+	       <if test="@Ognl@isNotEmpty(rank)">
+				AND RANK = #{rank}
+			</if>
+	       <if test="@Ognl@isNotEmpty(isDisabled)">
+				AND IS_DISABLED = #{isDisabled}
+			</if>
+		</where>
+	</sql>
+		
+    <select id="User.findPage.count" resultType="long">
+        SELECT count(*) FROM T_SYS_USER 
+		<include refid="User.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="User.findPage" resultMap="RM.User">
+    	SELECT <include refid="User.columns" />
+	    FROM T_SYS_USER 
+		<include refid="User.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+    <select id="User.getByUserName" resultMap="RM.User" parameterType="java.lang.String">
+	    SELECT <include refid="User.columns"/>
+	    <![CDATA[
+	        FROM T_SYS_USER where USER_NAME = #{userName,jdbcType=VARCHAR}
+	    ]]>
+    </select>
+    
+	<!-- 扩展自定义 -->
+	<select id="User.getUserModules" resultMap="RM.Module">
+	<![CDATA[
+		SELECT
+		m.MODULE_ID,
+		m.MODULE_NAME,
+		m.URL,
+		m.PARENT,
+		m.STATUS,
+		m.DESCRIPTION,
+		m.SORT_ORDER
+		FROM
+		T_SYS_USER_role  ur ,
+		t_sys_role  r ,
+		t_sys_role_module  rm ,
+		t_sys_module  m
+		WHERE
+		ur.ROLE_ID = r.ROLE_ID AND
+		r.ROLE_ID = rm.ROLE_ID AND
+		rm.MODULE_CODE = m.MODULE_ID AND
+		r.STATUS = 1 AND
+        M.STATUS = 1 AND 
+		ur.USERID = #{userid} 
+		
+		UNION
+		 
+	  SELECT 
+        m.MODULE_ID,
+        m.MODULE_NAME,
+        m.URL,
+        m.PARENT,
+        m.STATUS,
+        m.DESCRIPTION,
+        m.SORT_ORDER 
+        FROM
+        T_SYS_USER_group  ug ,
+        t_sys_group   g ,
+        t_sys_group_role  gr ,
+        t_sys_role_module  rm ,
+        t_sys_module  m ,
+        t_sys_role  r
+        WHERE
+        ug.GROUP_ID =  g.GROUP_ID AND 
+        g.GROUP_ID =  gr.GROUP_ID AND 
+        gr.ROLE_ID =  r.ROLE_ID AND 
+        r.ROLE_ID =  rm.ROLE_ID AND 
+        rm.MODULE_CODE =  m.MODULE_ID AND 
+        r.STATUS = 1 AND
+        m.STATUS = 1 AND 
+        g.STATUS = 1 AND 
+        ug.USERID =  #{userid}
+	  ]]>
+	  
+	</select>
+    <!-- 所有组信息 -->
+    <select id="User.getUserGroups" resultMap="RM.Group" >
+	    SELECT g.group_id as group_id,g.group_name as group_name 
+	    FROM t_sys_group g,T_SYS_USER_group up
+	    where g.group_id = up.group_id
+	    and up.userid = #{userid}
+    </select>
+    <!-- 所有角色信息 -->
+    <select id="User.getUserRoles" resultMap="RM.Role" >
+    <![CDATA[
+	    SELECT 
+	        r.ROLE_ID ,
+        	r.ROLE_NAME ,
+        	r.ROLE_DESC ,
+        	r.PRIORITY ,
+        	r.STATUS  
+	    FROM t_sys_role r,T_SYS_USER_role ur
+	    where r.role_id = ur.role_id 
+	    and r.status=1 
+	    and ur.userid = #{userid}
+	    	
+		UNION
+		
+		SELECT 
+	        r.ROLE_ID ,
+        	r.ROLE_NAME ,
+        	r.ROLE_DESC ,
+        	r.PRIORITY ,
+        	r.STATUS  
+	    FROM 
+	        t_sys_role r,
+	        T_SYS_group_role gr,
+	        t_sys_group   g ,
+	        t_sys_user_group ug 
+	    where r.role_id = gr.role_id 
+	    and gr.group_id=g.group_id 
+	    and g.group_id=ug.group_id  
+	    and r.status=1 
+	    and g.status=1 
+	    and ug.userid = #{userid}
+	      ]]>
+    </select>
+    
+   <select id="User.getUserPermissions" resultMap="RM.Permission">
+	<![CDATA[
+		SELECT
+		    p.ID ,
+        	p.CODE ,
+        	p.DESCRIPTION ,
+        	p.STATUS
+		FROM
+		T_SYS_USER_role  ur ,
+		t_sys_role  r ,
+		t_sys_role_permission  rp ,
+		t_sys_permission  p
+		WHERE
+		ur.ROLE_ID = r.ROLE_ID AND
+		r.ROLE_ID = rp.ROLE_ID AND
+		rp.permission_id = p.id AND
+		r.STATUS = 1 AND
+        p.STATUS = 1 AND 
+		ur.USERID = #{userid} 
+		
+		UNION
+		 
+	  SELECT 
+            p.ID ,
+            p.CODE ,
+        	p.DESCRIPTION ,
+        	p.STATUS 
+        FROM
+        T_SYS_USER_group  ug ,
+        t_sys_group   g ,
+        t_sys_group_role  gr ,
+        t_sys_role_permission  rp ,
+        t_sys_permission  p ,
+        t_sys_role  r
+        WHERE
+        ug.GROUP_ID =  g.GROUP_ID AND 
+        g.GROUP_ID =  gr.GROUP_ID AND 
+        gr.ROLE_ID =  r.ROLE_ID AND 
+        r.ROLE_ID =  rp.ROLE_ID AND 
+        rp.permission_id =  p.id AND 
+        r.STATUS = 1 AND
+        p.STATUS = 1 AND 
+        g.STATUS = 1 AND 
+        ug.USERID =  #{userid}
+	  ]]>
+	  
+	</select>
+</mapper>
+

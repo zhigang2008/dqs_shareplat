@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="Permission">
+
+	<resultMap id="RM.Permission" type="com.steven.core.model.Permission">
+        <result property="id" column="ID"/>
+        <result property="code" column="CODE"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="status" column="STATUS"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Permission.columns">
+	    <![CDATA[
+		ID,CODE,DESCRIPTION,STATUS
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="Permission.insert" >
+    <![CDATA[
+        INSERT INTO T_SYS_PERMISSION (
+        	ID ,
+        	CODE ,
+        	DESCRIPTION ,
+        	STATUS 
+        ) VALUES (
+        	#{id,jdbcType=DECIMAL} ,
+        	#{code,jdbcType=VARCHAR} ,
+        	#{description,jdbcType=VARCHAR} ,
+        	#{status,jdbcType=DECIMAL} 
+        )
+    ]]>
+		<!--oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL -->
+			
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+			SELECT S_T_SYS_PERMISSION.nextval  FROM DUAL 
+        </selectKey>
+	</insert>
+    
+	<update id="Permission.update" >
+    <![CDATA[
+        UPDATE T_SYS_PERMISSION SET
+	        CODE = #{code,jdbcType=VARCHAR} ,
+	        DESCRIPTION = #{description,jdbcType=VARCHAR} ,
+	        STATUS = #{status,jdbcType=DECIMAL} 
+        WHERE 
+	        ID = #{id} 
+    ]]>
+	</update>
+
+    <delete id="Permission.delete">
+    <![CDATA[
+        DELETE FROM T_SYS_PERMISSION WHERE
+        ID = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="Permission.getById" resultMap="RM.Permission">
+		SELECT <include refid="Permission.columns" />
+	    <![CDATA[
+		    FROM T_SYS_PERMISSION 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+	</select>
+	<!-- 不建议,仅提供给数据量较少的基表查询 -->
+	 <select id="Permission.findAll" resultMap="RM.Permission">
+		SELECT <include refid="Permission.columns" />
+	    <![CDATA[
+		    FROM T_SYS_PERMISSION 
+	    ]]>
+	</select>
+	<!-- 基础代码,视情况添加状态识别 -->
+	 <select id="Permission.baseCode" resultMap="RM.Permission">
+		SELECT <include refid="Permission.columns" />
+	    <![CDATA[
+		    FROM T_SYS_PERMISSION 
+		    WHERE STATUS=1 
+	    ]]>
+	    <!-- 视情况添加where条件 -->
+	</select>
+	
+	<sql id="Permission.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+	       <if test="@Ognl@isNotEmpty(id)">
+				AND ID = #{id}
+			</if>
+	       <if test="@Ognl@isNotEmpty(code)">
+				AND CODE like '%'||#{code}||'%' 
+			</if>
+	       <if test="@Ognl@isNotEmpty(description)">
+				AND DESCRIPTION like '%'||#{description}||'%'
+			</if>
+	       <if test="@Ognl@isNotEmpty(status)">
+				AND STATUS = #{status}
+			</if>
+		</where>
+	</sql>
+		
+    <select id="Permission.findPage.count" resultType="long">
+        SELECT count(*) FROM T_SYS_PERMISSION 
+		<include refid="Permission.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="Permission.findPage" resultMap="RM.Permission">
+    	SELECT <include refid="Permission.columns" />
+	    FROM T_SYS_PERMISSION 
+		<include refid="Permission.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+    <select id="Permission.getByCode" resultMap="RM.Permission" parameterType="java.lang.String">
+	    SELECT <include refid="Permission.columns"/>
+	    <![CDATA[
+	        FROM T_SYS_PERMISSION where CODE = #{code}
+	    ]]>
+    </select>
+    
+    
+	
+</mapper>
+

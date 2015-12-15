@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
+	   default-autowire="byName" default-lazy-init="false">
+
+    <!-- 国际化,并且可以批定文件编码,可以使用classpath: 或者WEB-INF/ 前缀 -->
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+    	<property name="basenames">
+    		<list>
+    			<value>classpath:i18n/messages</value>
+    		</list>
+    	</property>
+    	<property name="defaultEncoding" value="UTF-8"/>
+    	<property name="cacheSeconds" value="60"/>
+    </bean>
+    
+	<!-- 属性文件读入 -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath*:application.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 数据源定义 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver}"/>
+		<property name="url" value="${jdbc.url}"/>
+		<property name="username" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+	</bean>
+	<!-- 数据源定义-批处理 
+	<bean id="dataSource4Batch" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver}"/>
+		<property name="url" value="${jdbc.url}"/>
+		<property name="username" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+		<property name="defaultAutoCommit" value="false"/>
+	</bean>
+    -->
+	<!-- log4jdbc可以将数据源执行的sql将占位符?替换成字符,并以日志打印出来. log4j配置: log4j.logger.jdbc.sqltiming=INFO    详情请看: http://code.google.com/p/rapid-framework/wiki/log4jdbc
+	如oracle示例: 
+		原来的sql: select * from user where birth_date = ? and username = ? and age > ?
+		转换后sql: select * from user where birth_date = to_date('2010-08-13','yyyy-mm-dd') and username = 'badqiu' and age > 20
+	 
+	<bean id="log4jdbcInterceptor" class="net.sf.log4jdbc.DataSourceSpyInterceptor" />
+    <bean id="dataSourceLog4jdbcAutoProxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+       <property name="interceptorNames">
+           <list>
+              <value>log4jdbcInterceptor</value>        
+           </list>
+       </property>
+       <property name="beanNames">
+           <list>
+              <value>dataSource</value>
+           </list>
+       </property>
+    </bean>
+-->
+    	
+	<!-- 
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName"><value>java:comp/env/jdbc/ds</value></property>
+    </bean>
+ 	-->
+ 	
+ 	 	 
+	<!--  激活 @Required @Autowired,JSR 250's @PostConstruct, @PreDestroy and @Resource 等标注 
+	<context:annotation-config />
+	-->
+		
+	<!-- 支持 @AspectJ 标记
+		<aop:aspectj-autoproxy/>
+	-->
+
+	<!-- 以 @Transactional 标注来定义事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
+	<!--  邮件服务   -->
+	<bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host">
+			<value>${mail.smtp.host}</value>
+		</property>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
+				<prop key="mail.smtp.timeout">${mail.smtp.timeout}</prop>
+			</props>
+		</property>
+		<property name="username">
+			<value>${mail.user}</value>
+		</property>
+		<property name="password">
+			<value>${mail.password}</value>
+		</property>
+		<property name="defaultEncoding" value="${mail.defaultEncoding}" />
+	</bean>
+
+</beans>
