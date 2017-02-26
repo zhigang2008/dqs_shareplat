@@ -116,6 +116,7 @@
 		  <thead>
 			  <tr>
 				<th style="width:1px;">&nbsp;</th>
+				<th style="width:1px;"><input type="checkbox" onclick="setAllCheckboxState('items',this.checked)"/></th>
 				<!-- 排序时为th增加sortColumn即可,new SimpleTable('sortColumns')会为tableHeader自动增加排序功能; -->
 				<th sortColumn="PROVINCE_CODE" >省份代码</th>
 				<th sortColumn="PROVINCE_CNAME" >省份</th>
@@ -131,6 +132,7 @@
 		  	   <c:forEach items="${page.result}" var="item" varStatus="status">
 			   <tr class="${status.count % 2 == 0 ? 'odd' : 'even'}">
 				<td>${page.thisPageFirstElementNumber + status.index}</td>
+				<td><input type="checkbox" name="items" value="id=${item.id}&" /></td>
 				<td><c:out value='${item.provinceCode}'/>&nbsp;</td>
 				<td><c:out value='${item.provinceCname}'/>&nbsp;</td>
 				<td><c:out value='${item.stationCode}'/>&nbsp;</td>
@@ -149,6 +151,7 @@
 		  	  <!-- 空表格 -->
 		  	  <c:forEach var="nullitem" begin="1" end="4" step="1"  varStatus="nullstatus">
 		  	   <tr class="${(nullstatus.count+1) % 2 == 0 ? 'even' : 'odd'}">
+				<td>&nbsp;</td>
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>

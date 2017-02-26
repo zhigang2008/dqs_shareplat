@@ -87,6 +87,7 @@ public class RsMapLibAction extends BaseStruts2Action implements Preparable,Mode
 	/** 执行搜索 */
 	public String list() {
 		RsMapLibQuery query = newQuery(RsMapLibQuery.class,DEFAULT_SORT_COLUMNS);
+		query.setPageSize(1000);
 		Page page = rsMapLibManager.findPage(query);
 		savePage(page,query);
 		return LIST_JSP;

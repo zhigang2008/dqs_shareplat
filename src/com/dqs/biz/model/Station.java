@@ -49,7 +49,7 @@ public class Station extends BaseEntity implements java.io.Serializable{
         * 序号       db_column: ID 
         */	
 	//
-	private java.lang.Integer id;
+	private java.lang.Long id;
        /**
         * 地区       db_column: REGION_CODE 
         */	
@@ -135,16 +135,16 @@ public class Station extends BaseEntity implements java.io.Serializable{
 	}
 
 	public Station(
-		java.lang.Integer id
+		java.lang.Long id
 	){
 		this.id = id;
 	}
 
-	public void setId(java.lang.Integer value) {
+	public void setId(java.lang.Long value) {
 		this.id = value;
 	}
 	
-	public java.lang.Integer getId() {
+	public java.lang.Long getId() {
 		return this.id;
 	}
 	public void setRegionCode(java.lang.String value) {

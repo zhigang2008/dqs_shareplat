@@ -22,7 +22,7 @@ public class StationQuery extends BaseQuery implements Serializable {
 	 */
 	private static final long serialVersionUID = -3627576518847429650L;
 	/** 序号 */
-	private java.lang.Integer id;
+	private java.lang.Long id;
 	/** 地区 */
 	private java.lang.String regionCode;
 	/** 编号 */
@@ -54,11 +54,11 @@ public class StationQuery extends BaseQuery implements Serializable {
 	/** 地区简写代码 */
 	private java.lang.String zmCode;
 
-	public java.lang.Integer getId() {
+	public java.lang.Long getId() {
 		return this.id;
 	}
 	
-	public void setId(java.lang.Integer value) {
+	public void setId(java.lang.Long value) {
 		this.id = value;
 	}
 	
