@@ -1,9 +1,11 @@
 package com.dqs.biz.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import com.dqs.biz.model.BoreholeStation;
 import com.dqs.biz.model.Station;
 import com.dqs.biz.vo.query.StationQuery;
 import com.steven.framework.base.BaseIbatis3Dao;
@@ -52,5 +54,20 @@ public class StationDao extends BaseIbatis3Dao<Station,java.lang.Integer>{
 	    return getSqlSessionTemplate().selectList(getIbatisMapperNamesapce()+".getStationInfo", provinceCode);
 	}
 	
-
+	/**创建表
+	 * @param params
+	 */
+	public void createTable(Station station) {
+		getSqlSessionTemplate().update(getIbatisMapperNamesapce()+".createStationTable", station);
+		
+	}
+	/**删除表
+	 * @param params
+	 */
+	public void dropTable(Station station) {
+		getSqlSessionTemplate().update(getIbatisMapperNamesapce()+".dropStationTable", station);
+		
+	}
+	
+	
 }

@@ -225,5 +225,20 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    ]]>
 	</select>
 	
+	<!-- 创建台站table -->
+	<update id="createStationTable">
+	   create table T_TEMPERATURE_${zmCode}_${code} (
+	        ID ,
+        	STATION_ID ,
+        	TIME ,
+        	TEMPERATURE ,
+        	DATA_YEAR 
+	   )
+	</update>
+	<!-- 删除台站table -->
+	<update id="dropStationTable">
+	   drop table T_TEMPERATURE_${zmCode}_${code}
+	</update>
+	
 </mapper>
 
