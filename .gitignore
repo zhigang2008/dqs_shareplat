@@ -6,3 +6,5 @@
 .DS_*
 .metadata/
 .project
+/build/
+/dist/

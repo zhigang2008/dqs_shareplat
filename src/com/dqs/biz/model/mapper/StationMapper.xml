@@ -228,11 +228,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<!-- 创建台站table -->
 	<update id="createStationTable">
 	   create table T_TEMPERATURE_${zmCode}_${code} (
-	        ID ,
-        	STATION_ID ,
-        	TIME ,
-        	TEMPERATURE ,
-        	DATA_YEAR 
+	        ID          NUMBER(20,0) NOT NULL,
+        	STATION_ID  INTEGER NOT NULL,
+        	TIME        DATE,
+        	TEMPERATURE DECIMAL,
+        	DATA_YEAR   VARCHAR2(10) 
 	   )
 	</update>
 	<!-- 删除台站table -->
