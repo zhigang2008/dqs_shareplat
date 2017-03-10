@@ -1,11 +1,8 @@
 package com.dqs.biz.dao;
 
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.stereotype.Repository;
 
-import com.dqs.biz.model.BoreholeStation;
 import com.dqs.biz.model.Station;
 import com.dqs.biz.vo.query.StationQuery;
 import com.steven.framework.base.BaseIbatis3Dao;
@@ -15,6 +12,9 @@ import com.steven.framework.core.page.Page;
 @Repository
 public class StationDao extends BaseIbatis3Dao<Station,java.lang.Integer>{
         /* (non-Javadoc)
+	 * @see com.steven.framework.base.BaseIbatis3Dao#getIbatisMapperNamesapce()
+	 */
+	/* (non-Javadoc)
 	 * @see com.steven.framework.base.BaseIbatis3Dao#getIbatisMapperNamesapce()
 	 */
 	@Override

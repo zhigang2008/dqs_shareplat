@@ -226,7 +226,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 创建台站table -->
-	<update id="createStationTable">
+	<update id="Station.createStationTable">
 	   create table T_TEMPERATURE_${zmCode}_${code} (
 	        ID          NUMBER(20,0) NOT NULL,
         	STATION_ID  INTEGER NOT NULL,
@@ -236,7 +236,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	   )
 	</update>
 	<!-- 删除台站table -->
-	<update id="dropStationTable">
+	<update id="Station.dropStationTable">
 	   drop table T_TEMPERATURE_${zmCode}_${code}
 	</update>
 	
