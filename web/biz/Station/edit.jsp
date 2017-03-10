@@ -93,7 +93,7 @@
 			地区简写代码（禁止修改）:
 		</td>	
 		<td>
-		  <s:textfield label="地区简写代码" key="zmCode" value="%{model.zmCode}" readonly="yes" cssClass="" required="false" />
+		  <s:textfield label="地区简写代码" key="zmCode" value="%{model.zmCode}" readonly="true" cssClass="" required="false" />
 	    </td>
 	</tr>
 	<tr>	
@@ -101,7 +101,7 @@
 			编号（禁止修改）<span class="required">*</span>:
 		</td>	
 		<td>
-		  <s:textfield label="编号" key="code" value="%{model.code}" readonly="yes" cssClass="required " required="true" />
+		  <s:textfield label="编号" key="code" value="%{model.code}" readonly="true" cssClass="required " required="true" />
 	    </td>
 	</tr>
 	

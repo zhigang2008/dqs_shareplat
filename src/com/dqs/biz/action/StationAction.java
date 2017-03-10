@@ -131,13 +131,17 @@ public class StationAction extends BaseStruts2Action implements Preparable,Model
 		for(int i = 0; i < items.length; i++) {
 			Hashtable params = HttpUtils.parseQueryString(items[i]);
 			java.lang.Integer id = new java.lang.Integer((String)params.get("id"));
-			
-			//drop the table
-			Station rmstation =stationManager.getById(id);
-			if(rmstation!=null&&rmstation.getCode()!=null&&rmstation.getZmCode()!=null){
-			stationManager.dropTable(rmstation);
+
+			// drop the table
+			Station rmstation = stationManager.getById(id);
+			if (rmstation != null && rmstation.getCode() != null && rmstation.getZmCode() != null) {
+				try {
+					stationManager.dropTable(rmstation);
+				} catch (Exception e) {
+					log.warn("删除地温数据表失败:" + e.getMessage());
+				}
 			}
-			//remove data
+			// remove data
 			stationManager.removeById(id);
 		}
 

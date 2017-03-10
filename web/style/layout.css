@@ -115,7 +115,10 @@ a:hover {
 	 height:16px;
 	 float:none;
 }
-
+input[disabled], input[readonly]{
+  background-color: #eeeeee;
+  opacity: 1;
+}
 /* END formTable */
 
 /* 查询panel样式 for list.jsp */
