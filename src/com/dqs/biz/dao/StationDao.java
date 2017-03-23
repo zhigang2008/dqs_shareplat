@@ -1,7 +1,6 @@
 package com.dqs.biz.dao;
 
 import java.util.List;
-
 import org.springframework.stereotype.Repository;
 
 import com.dqs.biz.model.Station;
@@ -13,6 +12,9 @@ import com.steven.framework.core.page.Page;
 @Repository
 public class StationDao extends BaseIbatis3Dao<Station,java.lang.Integer>{
         /* (non-Javadoc)
+	 * @see com.steven.framework.base.BaseIbatis3Dao#getIbatisMapperNamesapce()
+	 */
+	/* (non-Javadoc)
 	 * @see com.steven.framework.base.BaseIbatis3Dao#getIbatisMapperNamesapce()
 	 */
 	@Override
@@ -52,5 +54,20 @@ public class StationDao extends BaseIbatis3Dao<Station,java.lang.Integer>{
 	    return getSqlSessionTemplate().selectList(getIbatisMapperNamesapce()+".getStationInfo", provinceCode);
 	}
 	
-
+	/**创建表
+	 * @param params
+	 */
+	public void createTable(Station station) {
+		getSqlSessionTemplate().update(getIbatisMapperNamesapce()+".createStationTable", station);
+		
+	}
+	/**删除表
+	 * @param params
+	 */
+	public void dropTable(Station station) {
+		getSqlSessionTemplate().update(getIbatisMapperNamesapce()+".dropStationTable", station);
+		
+	}
+	
+	
 }

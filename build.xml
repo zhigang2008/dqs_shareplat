@@ -41,7 +41,7 @@
 	</target>
 
 	<target name="compile"  depends="init" description="编译client Java文件">
-		<javac destdir="${classes.dir}" debug="on" deprecation="false" failonerror="true" target="1.6" encoding="utf-8">
+		<javac destdir="${classes.dir}" debug="on" deprecation="false" failonerror="true" target="1.7" encoding="utf-8">
 			<src path="${src.java.dir}" />
 			  <include name="com/**/*.java" />
 			  <classpath refid="master-classpath" />

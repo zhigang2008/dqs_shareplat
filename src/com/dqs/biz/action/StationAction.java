@@ -9,9 +9,12 @@ import com.dqs.biz.service.StationManager;
 import com.dqs.biz.vo.query.StationQuery;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import com.steven.core.model.Region;
+import com.steven.core.service.RegionManager;
 import com.steven.framework.base.BaseStruts2Action;
 import com.steven.framework.common.web.util.HttpUtils;
 import com.steven.framework.core.page.Page;
+
 
 /**
  * @author steven
@@ -28,6 +31,8 @@ public class StationAction extends BaseStruts2Action implements Preparable,Model
 	private StationManager stationManager;
 	/**Model对象*/
 	private Station station;
+	/**区域服务**/
+	private RegionManager regionManager;
 	
 	/**对象ID*/
 	java.lang.Integer id = null;
@@ -57,6 +62,12 @@ public class StationAction extends BaseStruts2Action implements Preparable,Model
 	public void setStationManager(StationManager manager) {
 		this.stationManager = manager;
 	}	
+	/**
+	 * @param regionManager
+	 */
+	public void setRegionManager(RegionManager regionManager) {
+		this.regionManager = regionManager;
+	}
 	/* (non-Javadoc)
 	 * @see com.opensymphony.xwork2.ModelDriven#getModel()
 	 */
@@ -92,7 +103,15 @@ public class StationAction extends BaseStruts2Action implements Preparable,Model
 	
 	/** 保存新增对象 */
 	public String save() {
-		stationManager.save(station);
+		//先查找zmcode
+		Region region=regionManager.getByRegionCode(station.getRegionCode());
+		if (region != null) {
+			station.setZmCode(region.getZmCode());
+			// 创建数据表
+			stationManager.createTable(station);
+			// 存储站点信息
+			stationManager.save(station);
+		}
 		return LIST_ACTION;
 	}
 	
@@ -112,6 +131,17 @@ public class StationAction extends BaseStruts2Action implements Preparable,Model
 		for(int i = 0; i < items.length; i++) {
 			Hashtable params = HttpUtils.parseQueryString(items[i]);
 			java.lang.Integer id = new java.lang.Integer((String)params.get("id"));
+
+			// drop the table
+			Station rmstation = stationManager.getById(id);
+			if (rmstation != null && rmstation.getCode() != null && rmstation.getZmCode() != null) {
+				try {
+					stationManager.dropTable(rmstation);
+				} catch (Exception e) {
+					log.warn("删除地温数据表失败:" + e.getMessage());
+				}
+			}
+			// remove data
 			stationManager.removeById(id);
 		}
 

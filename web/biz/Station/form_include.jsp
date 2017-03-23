@@ -13,6 +13,7 @@
 		  <s:select label="地区" key="regionCode" value="%{model.regionCode}" cssClass="required " required="true" list="%{baseCode.region}"  listKey="regionCode"  listValue="regionName"/>
 	    </td>
 	</tr>
+	<!-- 系统自动获取 
 	<tr>	
 		<td class="tdlabel">
 			地区简写代码:
@@ -21,6 +22,7 @@
 		  <s:textfield label="地区简写代码" key="zmCode" value="%{model.zmCode}" readonly="yes" cssClass="" required="false" />
 	    </td>
 	</tr>
+	-->
 	<tr>	
 		<td class="tdlabel">
 			编号<span class="required">*</span>:

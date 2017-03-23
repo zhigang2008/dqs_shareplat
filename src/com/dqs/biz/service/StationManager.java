@@ -57,5 +57,19 @@ public class StationManager extends BaseManager<Station,java.lang.Integer>{
 	public List<Station> getStationInfo(String zmCode) {
 		return stationDao.getStationInfo(zmCode);
 	}
+	/**创建数据表
+	 * @param station
+	 */
+	public void createTable(Station station) {
+		stationDao.createTable(station);
+		
+	}
+	/**移除表数据
+	 * @param rmstation
+	 */
+	public void dropTable(Station rmstation) {
+		stationDao.dropTable(rmstation);
+		
+	}
 	
 }

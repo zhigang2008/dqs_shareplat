@@ -1,3 +1,10 @@
-/.settings/
+/.settings/*
 /.project
 /.classpath
+/bin/
+*.log
+.DS_*
+.metadata/
+.project
+/build/
+/dist/
