@@ -145,7 +145,7 @@ function refreshCheckCode(){
 							<dd>
 								<s:checkbox name="rememberMe" id="rememberMe"  value="false"  ></s:checkbox>记住我
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<s:url id="forgetpasswdUrl" value="/member/forgetpwd.jsp"></s:url>
+								<s:url var="forgetpasswdUrl" value="/member/forgetpwd.jsp"></s:url>
 				                <s:a href="%{forgetpasswdUrl}">忘记密码</s:a>
 							</dd>
 						</dl>
@@ -173,7 +173,7 @@ function refreshCheckCode(){
         <div class="col-sub">
 			<div id="login_index_right" style="padding-top:50px;">
 				<div>还未注册账号？</div>
-				<s:url id="registerUrl" value="/reg/register.jsp">
+				<s:url var="registerUrl" value="/reg/register.jsp">
 				   <s:param name="from" value="loginpage" />
 				</s:url>
 				<s:a href="%{registerUrl}">	<img src="<s:url value="/image/layout/bg_btn_01.jpg"/>" /></s:a>

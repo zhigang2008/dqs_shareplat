@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE struts PUBLIC
-        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-        "http://struts.apache.org/dtds/struts-2.0.dtd">
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
 <struts>
 <!-- custom-default no auth -->
- <package name="custom-default" extends="struts-default">
+ <package name="custom-default" extends="struts-default" strict-method-invocation="false">
         <result-types>
             <result-type name="json" class="org.apache.struts2.json.JSONResult"/>
             <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
@@ -35,7 +35,7 @@
  </package>
  
  <!-- custom with auth -->
-  <package name="custom-auth" extends="custom-default">
+  <package name="custom-auth" extends="custom-default" strict-method-invocation="false">
         <interceptors>
         	<interceptor name="authenticationInterceptor" class="com.steven.framework.core.struts2.interceptor.AuthenticationInterceptor"/>
             <interceptor name="authorizationInterceptor" class="com.steven.framework.core.struts2.interceptor.AuthorizationInterceptor"/>
@@ -48,7 +48,7 @@
  </package>
  
   <!-- custom with authentication and authorization  -->
-  <package name="custom-authorization" extends="custom-default">
+  <package name="custom-authorization" extends="custom-default" strict-method-invocation="false">
         <interceptors>
         	<interceptor name="authenticationInterceptor" class="com.steven.framework.core.struts2.interceptor.AuthenticationInterceptor"/>
             <interceptor name="authorizationInterceptor" class="com.steven.framework.core.struts2.interceptor.AuthorizationInterceptor"/>
@@ -66,7 +66,7 @@
  </package>
 
 	<!-- 公用 -->
-	<package name="commons" extends="custom-default" namespace="/">
+	<package name="commons" extends="custom-default" namespace="/" strict-method-invocation="false">
 		<!-- 验证码结果类型 -->
 		<result-types>
 			<result-type name="captchaImage"
@@ -112,7 +112,7 @@
 	</package>
 
 	<!-- 用户操作 -->
-	<package name="member" namespace="/member" extends="custom-default">
+	<package name="member" namespace="/member" extends="custom-default" strict-method-invocation="false">
 		<!-- 修改密码 -->
 		<action name="changePassword" method="changePassword" class="com.steven.member.action.MemberAction">
 			<result name="input">/member/changepwd.jsp</result>
@@ -161,7 +161,7 @@
 	</package>
 	
 	<!-- 文件上传 -->
-    <package name="upload" namespace="/support" extends="custom-default">
+    <package name="upload" namespace="/support" extends="custom-default" strict-method-invocation="false">
 		<action name="fileupload" method="upload" class="com.steven.util.fileupload.action.FileUploadAction">
 		    <result name="jsonResult" type="json">
 		      <param name="ignoreHierarchy">false</param>

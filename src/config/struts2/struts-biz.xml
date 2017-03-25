@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE struts PUBLIC
-        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-        "http://struts.apache.org/dtds/struts-2.0.dtd">
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
 <struts>
     <!-- 远程校验 -->
-	<package name="remoteCheck" namespace="/remoteCheck" extends="custom-default">
+	<package name="remoteCheck" namespace="/remoteCheck" extends="custom-default" strict-method-invocation="false">
 	  <global-results>
 			<result name="checkResult" type="stream">
 				<param name="contentType">text/plain</param>
@@ -24,7 +24,7 @@
 		 
   	<!-- 具体业务部分-->
 
-    <package name="biz" namespace="/biz" extends="custom-default">
+    <package name="biz" namespace="/biz" extends="custom-default" strict-method-invocation="false">
        <global-results>
         <!-- json result -->
 		     <result name="jsonPageList" type="json">
@@ -123,7 +123,7 @@
 		</action>			
     </package>
  <!-- 前端展示 -->
-     <package name="front" namespace="/front" extends="custom-default">
+     <package name="front" namespace="/front" extends="custom-default" strict-method-invocation="false">
      <!-- 报表信息 -->
   		<action name="getReport" class="com.dqs.report.action.ReportAction">
 		    <result name="jsonList" type="json">

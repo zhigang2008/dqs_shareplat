@@ -1,6 +1,7 @@
 ﻿<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="com.steven.framework.common.menu.Menu" %>
 <%@ taglib uri="/steven-tags" prefix="wylb" %>
+<%@ taglib uri="/struts-tags" prefix="s" %>
 	<!-- Header -->
 	<div id="top" >
 		<div id="header_back"  class="wrapper">
@@ -22,7 +23,7 @@
 				<s:if test="#session.CURRENT_USER.userid!=2">
                                 当前用户:<b><wylb:principal property="realName"/></b>
 				<span>|</span> <a href="<s:url value="/member/changepwd.jsp"/>">更改密码</a>
-				<s:url id="userUpdateUrl" action="toUpdateUserInfo" namespace="/member" >
+				<s:url var="userUpdateUrl" action="toUpdateUserInfo" namespace="/member" >
 				  <s:param name="userid" value="%{#session.CURRENT_USER.userid}"/>
 				</s:url>
 				<span>|</span> <s:a href="%{userUpdateUrl}" method="post">个人信息</s:a>

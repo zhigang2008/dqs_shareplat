@@ -33,7 +33,7 @@
         <div class="summary"><strong>摘要：</strong> </div>
          -->
         <div class="content-txt">
-        <s:property value="%{model.contentTxt.txt}" escape="false"/>
+        <s:property value="%{model.contentTxt.txt}" escapeHtml="false"/>
         </div>
 		<s:hidden name="id" id="id" value="%{model.id}"/>
 	</div>

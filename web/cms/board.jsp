@@ -154,12 +154,12 @@
 				</div>
 				<div class="cl"></div>
 				<div class="entry">
-					&nbsp;&nbsp;<img title="用户留言内容" src="<c:url value="/image/cms/post_ask.gif"/>" align="absmiddle"/><c:out value='${item.content}'/>
+					&nbsp;&nbsp;<img title="用户留言内容" src="<c:url value="/image/cms/post_ask.gif"/>" align="middle"/><c:out value='${item.content}'/>
 				</div>
                <div class="cl"></div>
              <c:if test="${item.reply!=null}">
                <div class="reply">
-                   &nbsp;&nbsp;<img title="管理员回复" src="<c:url  value="/image/cms/post_reply.gif"/>" align="absmiddle"/>
+                   &nbsp;&nbsp;<img title="管理员回复" src="<c:url  value="/image/cms/post_reply.gif"/>" align="middle"/>
                 <c:out value='${item.reply}'/>
                </div>
                </c:if>

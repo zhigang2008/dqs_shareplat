@@ -27,7 +27,7 @@
 		</table>
 		<hr/>
 		<div>
-		 <s:property value="%{model.content}"  escape="false"/>
+		 <s:property value="%{model.content}"   escapeHtml="false"/>
 	    </div>
 		</div>
 		</div>
